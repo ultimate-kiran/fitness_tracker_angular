@@ -1,0 +1,216 @@
+<div class="min-h-screen bg-gray-50">
+    <nav class="w-full bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
+      <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center">
+          <button type="button" class="md:hidden mr-2" (click)="isMenuOpen = !isMenuOpen">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+          <a routerLink="/" class="text-xl font-bold text-gray-900">BodyBloom</a>
+        </div>
+        <div [class]="(isMenuOpen ? 'flex' : 'hidden') + ' md:flex flex-col md:flex-row absolute md:relative top-16 md:top-0 left-0 md:left-auto bg-white md:bg-transparent w-full md:w-auto p-4 md:p-0 shadow-md md:shadow-none md:items-center space-y-2 md:space-y-0 md:space-x-6 z-50'">
+          <a routerLink="/" class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
+          <a routerLink="/workouts" class="text-gray-700 hover:text-blue-600 font-medium">Workouts</a>
+          <a routerLink="/nutrition" class="text-gray-700 hover:text-blue-600 font-medium">Nutrition</a>
+          <a routerLink="/progress" class="text-gray-700 hover:text-blue-600 font-medium">Progress</a>
+        </div>
+      </div>
+    </nav>
+    <div class="container mx-auto px-4 pt-20 pb-10">
+      <div class="flex flex-col space-y-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">Nutrition Tracker</h1>
+          <p class="text-gray-500">Track your meals and monitor your nutritional intake</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Calories</p>
+                <div class="flex items-baseline">
+                  <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ totals.calories }} / 2200</h3>
+                </div>
+              </div>
+              <div class="h-12 w-12 bg-orange-100 rounded-full flex items-center justify-center">
+                <svg class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+            </div>
+            <progress [value]="totals.calories" max="2200" class="w-full h-2 mt-4 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500" [style.width]="(totals.calories / 2200) * 100 + '%'"></div>
+            </progress>
+          </div>
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Protein</p>
+                <div class="flex items-baseline">
+                  <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ totals.protein }}g / 140g</h3>
+                </div>
+              </div>
+              <div class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                </svg>
+              </div>
+            </div>
+            <progress [value]="totals.protein" max="140" class="w-full h-2 mt-4 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500" [style.width]="(totals.protein / 140) * 100 + '%'"></div>
+            </progress>
+          </div>
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Carbs</p>
+                <div class="flex items-baseline">
+                  <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ totals.carbs }}g / 220g</h3>
+                </div>
+              </div>
+              <div class="h-12 w-12 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+              </div>
+            </div>
+            <progress [value]="totals.carbs" max="220" class="w-full h-2 mt-4 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500" [style.width]="(totals.carbs / 220) * 100 + '%'"></div>
+            </progress>
+          </div>
+          <div class="bg-white rounded-lg shadow p-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Fat</p>
+                <div class="flex items-baseline">
+                  <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ totals.fat }}g / 75g</h3>
+                </div>
+              </div>
+              <div class="h-12 w-12 bg-red-100 rounded-full flex items-center justify-center">
+                <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                </svg>
+              </div>
+            </div>
+            <progress [value]="totals.fat" max="75" class="w-full h-2 mt-4 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500" [style.width]="(totals.fat / 75) * 100 + '%'"></div>
+            </progress>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow">
+          <div class="p-6 border-b flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900">Meal Tracker</h2>
+            <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center" (click)="isDialogOpen = true">
+              <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              Add Meal
+            </button>
+          </div>
+          <div class="p-6 max-h-[600px] overflow-y-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div *ngFor="let meal of meals" class="bg-white rounded-lg shadow hover:shadow-md transition-shadow overflow-hidden">
+                <div class="p-4 border-b">
+                  <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center space-x-2">
+                      <svg class="h-4 w-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                      </svg>
+                      <h3 class="font-semibold text-gray-900">{{ meal.mealType }}</h3>
+                    </div>
+                    <div class="flex items-center text-sm text-gray-500">
+                      <svg class="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      <span>{{ meal.mealTime }}</span>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-3">{{ meal.food.join(', ') }}</p>
+                  <div class="grid grid-cols-4 gap-2 text-xs text-center">
+                    <div>
+                      <p class="font-medium text-gray-900">{{ meal.calories }}</p>
+                      <p class="text-gray-500">kcal</p>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900">{{ meal.protein }}g</p>
+                      <p class="text-gray-500">Protein</p>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900">{{ meal.carbs }}g</p>
+                      <p class="text-gray-500">Carbs</p>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900">{{ meal.fat }}g</p>
+                      <p class="text-gray-500">Fat</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-4 py-2 bg-gray-50">
+                  <div class="flex items-center space-x-2 text-xs mb-1">
+                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <span>Protein {{ getPercentage(meal.protein, meal.protein + meal.carbs + meal.fat) }}%</span>
+                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                    <span>Carbs {{ getPercentage(meal.carbs, meal.protein + meal.carbs + meal.fat) }}%</span>
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                    <span>Fat {{ getPercentage(meal.fat, meal.protein + meal.carbs + meal.fat) }}%</span>
+                  </div>
+                  <div class="flex h-2 rounded-full overflow-hidden">
+                    <div class="bg-blue-500" [style.width]="getPercentage(meal.protein, meal.protein + meal.carbs + meal.fat) + '%'"></div>
+                    <div class="bg-green-500" [style.width]="getPercentage(meal.carbs, meal.protein + meal.carbs + meal.fat) + '%'"></div>
+                    <div class="bg-red-500" [style.width]="getPercentage(meal.fat, meal.protein + meal.carbs + meal.fat) + '%'"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="isDialogOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Add New Meal</h3>
+            <form (ngSubmit)="handleAddMeal()" #mealForm="ngForm">
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Meal Type</label>
+                <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" [(ngModel)]="newMeal.mealType" name="mealType" required>
+                  <option value="" disabled>Select meal type</option>
+                  <option value="Breakfast">Breakfast</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Dinner">Dinner</option>
+                  <option value="Snack">Snack</option>
+                </select>
+              </div>
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Time</label>
+                <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" [(ngModel)]="newMeal.mealTime" name="mealTime" placeholder="e.g., 7:30 AM" required>
+              </div>
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Food Items</label>
+                <input type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" [(ngModel)]="newMeal.foodItems" name="foodItems" placeholder="e.g., Oatmeal, Yogurt, Honey" required>
+              </div>
+              <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Calories</label>
+                  <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" [(ngModel)]="newMeal.calories" name="calories" placeholder="e.g., 350" required>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Protein (g)</label>
+                  <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" [(ngModel)]="newMeal.protein" name="protein" placeholder="e.g., 25" required>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Carbs (g)</label>
+                  <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" [(ngModel)]="newMeal.carbs" name="carbs" placeholder="e.g., 40" required>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700">Fat (g)</label>
+                  <input type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" [(ngModel)]="newMeal.fat" name="fat" placeholder="e.g., 15" required>
+                </div>
+              </div>
+              <div class="flex justify-end space-x-2">
+                <button type="button" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md" (click)="isDialogOpen = false">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Add Meal</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

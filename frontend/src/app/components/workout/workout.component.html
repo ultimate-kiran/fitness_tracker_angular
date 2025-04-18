@@ -1,0 +1,54 @@
+<div class="p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-1">Workout Tracker</h2>
+  <p class="text-gray-500 mb-6">Log and monitor your fitness activities</p>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-blue-50 p-4 rounded-xl shadow text-center">
+      <h3 class="text-sm text-gray-500">Total Workouts</h3>
+      <p class="text-2xl font-semibold text-blue-600">{{ totalWorkouts }}</p>
+    </div>
+    <div class="bg-green-50 p-4 rounded-xl shadow text-center">
+      <h3 class="text-sm text-gray-500">Total Minutes</h3>
+      <p class="text-2xl font-semibold text-green-600">{{ totalMinutes }} min</p>
+    </div>
+    <div class="bg-red-50 p-4 rounded-xl shadow text-center">
+      <h3 class="text-sm text-gray-500">Calories Burned</h3>
+      <p class="text-2xl font-semibold text-red-600">{{ totalCalories }}</p>
+    </div>
+    <div class="bg-purple-50 p-4 rounded-xl shadow text-center">
+      <h3 class="text-sm text-gray-500">This Month</h3>
+      <p class="text-2xl font-semibold text-purple-600">{{ currentMonth }}</p>
+    </div>
+  </div>
+
+  <!-- Header with Add Button -->
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="text-lg font-semibold">Recent Workouts</h3>
+    <button (click)="openAddWorkoutDialog()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow">
+      + Add Workout
+    </button>
+  </div>
+
+  <!-- Workout Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div *ngFor="let workout of workouts" class="bg-white p-4 rounded-xl shadow-md">
+      <div class="flex justify-between items-center mb-2">
+        <h4 class="text-lg font-bold">{{ workout.title }}</h4>
+        <span class="text-xs font-semibold px-2 py-1 rounded-full"
+              [ngClass]="{
+                'bg-green-100 text-green-700': workout.intensity === 'Low',
+                'bg-yellow-100 text-yellow-700': workout.intensity === 'Medium',
+                'bg-red-100 text-red-700': workout.intensity === 'High'
+              }">
+          {{ workout.intensity }}
+        </span>
+      </div>
+      <div class="text-sm text-gray-600 space-y-1">
+        <p>🕒 {{ workout.duration }} mins</p>
+        <p>🔁 {{ workout.exerciseCount }} exercises</p>
+        <p>🔥 {{ workout.calories }} cal</p>
+      </div>
+    </div>
+  </div>
+</div>

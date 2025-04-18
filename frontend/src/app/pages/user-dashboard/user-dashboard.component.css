@@ -1,0 +1,83 @@
+.dashboard-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #f5f3ff, #ebf8ff);
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(6px);
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+  }
+  
+  .user-profile {
+    text-align: center;
+  }
+  
+  .user-profile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #d8b4fe;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .card {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(6px);
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  }
+  
+  .card .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .action-buttons {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .action-buttons button {
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    background: #8b5cf6;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .action-buttons button:hover {
+    background: #7c3aed;
+  }
+  
+  .data-section {
+    margin-top: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+  }
+  
