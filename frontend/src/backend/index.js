@@ -1,130 +1,33 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+/*Filename: index.js*/
 
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const workoutRoutes = require('./routes/workoutRoutes');
+const authRoutes = require('./routes/authRoutes'); // ✅ Added auth routes
+const exerciseRoutes = require('./routes/exerciseRoutes');
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB connection
-mongoose.connect('mongodb://localhost:27017/fitnessTracker')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect('mongodb://127.0.0.1:27017/fitnessTracker')
+  .then(() => console.log("MongoDB Connected to fitnessTracker"))
+  .catch(err => console.error('Mongo Error:', err));
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => console.log('MongoDB connected'));
-
-// Schema with unique constraints
-const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  weight: { type: Number, required: true },
-  height: { type: Number, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
-});
-
-const User = mongoose.model('User', userSchema);
-
-// POST route for registration
-app.post('/api/signup', async (req, res) => {
-  const { username, weight, height, email, password } = req.body;
-
-  if (!username || !weight || !height || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required.' });
-  }
-
-  try {
-    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-    if (existingUser) {
-      return res.status(409).json({ message: 'Username or Email already taken.' });
-    }
-
-    const isStrong = password.length >= 8 &&
-                     /[A-Z]/.test(password) &&
-                     /[a-z]/.test(password) &&
-                     /[0-9]/.test(password) &&
-                     /[^A-Za-z0-9]/.test(password);
-
-    if (!isStrong) {
-      return res.status(400).json({
-        message: 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.'
-      });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({
-      username,
-      weight,
-      height,
-      email,
-      password: hashedPassword
-    });
-
-    await newUser.save();
-
-    res.status(201).json({ message: 'User created successfully.', user: newUser });
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ message: 'Internal server error', error: error.message });
-  }
-});
-
-// POST route for login
-app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required.' });
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password.' });
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    if (!isPasswordCorrect) {
-      return res.status(401).json({ message: 'Invalid email or password.' });
-    }
-
-    res.status(200).json({
-      message: 'Login successful.',
-      user: {
-        id: user._id,
-        username: user.username,
-        email: user.email
-      }
-    });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Internal server error.' });
-  }
-});
-// GET route to fetch user data by ID
-app.get('/api/user/:id', async (req, res) => {
-  const userId = req.params.id;
-
-  try {
-    const user = await User.findById(userId).select('weight height');
-    if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
-    }
-
-    res.status(200).json({
-      weight: user.weight,
-      height: user.height
-    });
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
+app.use('/api/workouts', workoutRoutes);
+app.use('/api/exercises', exerciseRoutes);
+app.use('/api', authRoutes); // ✅ Mount auth routes at /api
 
 
-// Start server
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+const nutritionhomeRoutes = require('./routes/nutritionhomeRoute'); // Unique variable name
+app.use('/api/nutritionhome', nutritionhomeRoutes);
+
+const nutritionRoutes = require('./routes/nutritionRoutes'); // Unique variable name
+app.use('/api/nutrition', nutritionRoutes);
+
+const PORT = 5000;
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+ 

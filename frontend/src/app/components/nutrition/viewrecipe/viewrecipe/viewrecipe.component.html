@@ -1,0 +1,47 @@
+<div class="container" *ngIf="recipe">
+  <div class="recipe-image">
+    <img [src]="'assets/images/' + (recipe.Image_Name || '') + '.jpg'" alt="{{ recipe.Title }}" *ngIf="recipe.Image_Name">
+  </div>
+  <div class="recipe-details">
+    <h2>{{ recipe.Title }}</h2>
+    <p class="description">Healthy meal with fresh ingredients</p>
+    <div class="details-grid">
+      <div class="detail-card">
+        <p>Calories</p>
+        <p>{{ recipe.calories || 'N/A' }} kcal</p>
+      </div>
+    </div>
+    <div class="additional-details">
+      <h3>Ingredients</h3>
+      <ul class="ingredients-list" *ngIf="ingredientsList.length > 0; else noIngredients">
+        <li *ngFor="let ingredient of ingredientsList">{{ ingredient }}</li>
+      </ul>
+      <ng-template #noIngredients>
+        <p>N/A</p>
+      </ng-template>
+
+      <h3>Instructions</h3>
+      <ol class="instructions-list" *ngIf="instructionsList.length > 0; else noInstructions">
+        <li *ngFor="let step of instructionsList">{{ step }}</li>
+      </ol>
+      <ng-template #noInstructions>
+        <p>N/A</p>
+      </ng-template>
+
+      <h3>Cleaned Ingredients</h3>
+      <ul class="cleaned-ingredients-list" *ngIf="cleanedIngredientsList.length > 0; else noCleanedIngredients">
+        <li *ngFor="let ingredient of cleanedIngredientsList">{{ ingredient }}</li>
+      </ul>
+      <ng-template #noCleanedIngredients>
+        <p>N/A</p>
+      </ng-template>
+    </div>
+    <div class="flex space-x-4">
+      <button class="add-button" (click)="addToMealTracker()">+ Add to {{ mealTypeDisplay }}</button>
+      <button class="save-button bg-green-500 text-white px-4 py-2 rounded-md" (click)="saveMeal()">Save</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="!recipe" class="no-recipe">
+  <p>Recipe not found. Please try again.</p>
+</div>

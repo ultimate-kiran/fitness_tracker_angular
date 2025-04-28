@@ -1,44 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AddWorkoutDialogComponent } from './add-workout-dialog/add-workout-dialog.component';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-//import { MatCardModule } from '@angular/material/card';
-//import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @Component({
   selector: 'app-workout',
+  imports: [CommonModule],
   templateUrl: './workout.component.html',
-  styleUrls: ['./workout.component.css'],
-  imports: [CommonModule, ReactiveFormsModule /* other imports */]
- // schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class WorkoutComponent {
-  totalWorkouts = 4;
-  totalMinutes = 175;
-  totalCalories = 1380;
-  currentMonth = 'April';
+export class WorkoutComponent implements OnInit {
+  currentMonth: string = new Date().toLocaleString('default', { month: 'long' });
 
-  workouts = [
-    { title: 'Upper Body Strength', duration: '45 min', intensity: 'High', calories: 350, exerciseCount: 8 },
-    { title: 'HIIT Cardio', duration: '30 min', intensity: 'High', calories: 420, exerciseCount: 6 },
-    { title: 'Yoga Flow', duration: '50 min', intensity: 'Medium', calories: 310, exerciseCount: 7 },
-    { title: 'Lower Body Focus', duration: '50 min', intensity: 'Medium', calories: 300, exerciseCount: 7 },
-  ];
+  totalWorkouts = 0;
+  totalMinutes = 0;
+  totalCalories = 0;
 
-  constructor(private dialog: MatDialog) {}
+  workouts: any[] = [];
 
-  openAddWorkoutDialog() {
-    const dialogRef = this.dialog.open(AddWorkoutDialogComponent, {
-      width: '400px',
-    });
+  constructor(private dialog: MatDialog, private http: HttpClient) {}
 
-    dialogRef.afterClosed().subscribe(result => {
+  ngOnInit(): void {
+    this.fetchWorkouts();
+  }
+
+  openAddWorkoutDialog(): void {
+    const dialogRef = this.dialog.open(AddWorkoutDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.workouts.push(result);
-        this.totalWorkouts++;
-        this.totalMinutes += parseInt(result.duration);
-        this.totalCalories += parseInt(result.calories);
+        const userId = localStorage.getItem('userId') || '';
+        const workoutData = { ...result, userId };
+
+        this.http.post('http://localhost:3000/api/workouts', workoutData).subscribe({
+          next: () => this.fetchWorkouts(),
+          error: (err) => console.error('Error adding workout:', err),
+        });
       }
+    });
+  }
+
+  fetchWorkouts(): void {
+    const userId = localStorage.getItem('userId') || '';
+    this.http.get<any[]>(`http://localhost:3000/api/workouts/user/${userId}`).subscribe({
+      next: (workouts) => {
+        this.workouts = workouts;
+        this.totalWorkouts = workouts.length;
+        this.totalMinutes = workouts.reduce((sum, w) => sum + w.duration, 0);
+        this.totalCalories = workouts.reduce((sum, w) => sum + w.calories, 0);
+      },
+      error: (err) => console.error('Error fetching workouts:', err),
     });
   }
 }

@@ -1,0 +1,11 @@
+<div class="breakfast-container">
+    <h1>Breakfast Recipes</h1>
+    <div class="recipes-grid">
+      <div *ngFor="let recipe of breakfastRecipes" class="recipe-card">
+        <div class="recipe-content">
+          <h3>{{ recipe.Title }}</h3>
+          <button (click)="viewRecipe(recipe.Title)" class="view-recipe-btn">View Recipe</button>
+        </div>
+      </div>
+    </div>
+  </div>

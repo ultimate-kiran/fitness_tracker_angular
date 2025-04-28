@@ -1,0 +1,9 @@
+<div class="container">
+    <h2>Lunch Recipes</h2>
+    <div class="recipe-grid">
+      <div *ngFor="let recipe of lunchRecipes" class="recipe-card">
+        <h3>{{ recipe.Title }}</h3>
+        <button (click)="viewRecipe(recipe.Title)">View Recipe</button>
+      </div>
+    </div>
+  </div>

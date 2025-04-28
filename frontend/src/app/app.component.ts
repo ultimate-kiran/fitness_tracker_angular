@@ -23,6 +23,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatButtonModule
   ],
   template: `<router-outlet></router-outlet>`,
- // styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent { }

@@ -1,0 +1,14 @@
+<div class="nutrition-container">
+  <h1>Nutrition & Fitness Tracker</h1>
+  <p class="subtitle">Discover healthy recipes and track your nutrition goals</p>
+  <div class="meal-selection">
+    <button *ngFor="let meal of meals" (click)="onMealSelect(meal.title)">{{ meal.title }}</button>
+  </div>
+  <div class="meals-grid">
+    <div *ngFor="let meal of meals" class="meal-card" [style.backgroundColor]="meal.backgroundColor" (click)="onMealSelect(meal.title)">
+      <div class="meal-icon">{{ meal.icon }}</div>
+      <h2>{{ meal.title }}</h2>
+      <p>{{ meal.description }}</p>
+    </div>
+  </div>
+</div>

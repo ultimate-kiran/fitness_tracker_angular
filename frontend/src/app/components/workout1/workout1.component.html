@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="left-form">
+    <h2>🏋️ Post New Workout</h2>
+    <!-- Modified: Display selected exercise -->
+    <div *ngIf="selectedExercise" class="selected-exercise">
+      <label>Workout Type</label>
+      <p>{{ selectedExercise.name }}</p>
+    </div>
+
+    <label>Duration (minutes)</label>
+    <input type="number" [(ngModel)]="workout.duration" (ngModelChange)="calculateCalories()">
+
+    <label>Date</label>
+    <input type="date" [(ngModel)]="workout.date">
+
+    <label>Calories Burned</label>
+    <input type="number" [value]="workout.calories" readonly>
+
+    <button (click)="postWorkout()">+ Post Workout</button>
+
+    <div class="success" *ngIf="successMsg">{{ successMsg }}</div>
+  </div>
+
+  <div class="right-table">
+    <h2>🏆 Past Workouts</h2>
+    <table>
+      <tr>
+        <th>🏷️ Type</th>
+        <th>⏱️ Duration</th>
+        <th>🔥 Calories</th>
+        <th>📅 Date</th>
+      </tr>
+      <tr *ngFor="let w of workouts">
+        <td>{{ w.type }}</td>
+        <td>{{ w.duration }}</td>
+        <td>{{ w.calories }}</td>
+        <td>{{ w.date | date: 'MMM d, y' }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

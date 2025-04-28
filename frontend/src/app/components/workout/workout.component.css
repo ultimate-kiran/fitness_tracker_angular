@@ -1,42 +1,41 @@
 .workout-container {
-    background-color: #f9fafb;
-    min-height: 100vh;
-    padding: 2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .card {
-    background-color: #fff;
-    border-radius: 1rem;
-    padding: 1.25rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    text-align: center;
-    border: 1px solid #e5e7eb;
-  }
-  
-  .card h3 {
-    font-size: 1rem;
-    color: #4b5563;
-    margin-bottom: 0.5rem;
-  }
-  
-  .badge {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.5rem;
-    font-weight: bold;
-    margin-left: 0.5rem;
-    color: white;
-  }
-  
-  .badge.low {
-    background-color: #60a5fa; /* Blue */
-  }
-  .badge.medium {
-    background-color: #facc15; /* Yellow */
-    color: black;
-  }
-  .badge.high {
-    background-color: #ef4444; /* Red */
-  }
-  
+  background-color: #f9fafb;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.card h3 {
+  font-size: 1rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  color: white;
+}
+
+.badge.low {
+  background-color: #60a5fa; /* Blue */
+}
+.badge.medium {
+  background-color: #facc15; /* Yellow */
+  color: black;
+}
+.badge.high {
+  background-color: #ef4444; /* Red */
+}

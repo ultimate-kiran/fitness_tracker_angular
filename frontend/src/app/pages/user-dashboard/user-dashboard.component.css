@@ -81,3 +81,35 @@
     border: 1px solid #ccc;
   }
   
+  /* Sidebar styles */
+.sidebar {
+  background-color: #1f2937; /* Matches the dark background from the second image */
+  min-height: 100%;
+  border-radius: 12px;
+  padding-top: 1rem;
+}
+
+.sidebar-header {
+  padding-left: 1rem;
+}
+
+.sidebar-button {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: medium;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-button:hover {
+  background-color: #7c3aed; 
+}
+
+.sidebar-button svg {
+  stroke-width: 2;
+}
+
+/* Highlight active route */
+.sidebar-button.bg-orange-500 {
+  background-color: #7c3aed;
+}

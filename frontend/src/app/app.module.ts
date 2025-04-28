@@ -21,6 +21,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WorkoutComponent } from './components/workout/workout.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NutritionComponent } from './components/nutrition/nutrition.component';
+import { UserdashboardComponent } from './pages/user-dashboard/user-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NutritionComponent } from './components/nutrition/nutrition.component';
     HomeComponent,
     DashboardComponent,
     AddWorkoutDialogComponent,
-    NutritionComponent
+    NutritionComponent,
+    UserdashboardComponent,
   ],
   imports: [
     BrowserModule,

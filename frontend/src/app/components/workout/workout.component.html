@@ -25,7 +25,10 @@
   <!-- Header with Add Button -->
   <div class="flex justify-between items-center mb-4">
     <h3 class="text-lg font-semibold">Recent Workouts</h3>
-    <button (click)="openAddWorkoutDialog()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow">
+    <button
+      (click)="openAddWorkoutDialog()"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow"
+    >
       + Add Workout
     </button>
   </div>
@@ -35,12 +38,14 @@
     <div *ngFor="let workout of workouts" class="bg-white p-4 rounded-xl shadow-md">
       <div class="flex justify-between items-center mb-2">
         <h4 class="text-lg font-bold">{{ workout.title }}</h4>
-        <span class="text-xs font-semibold px-2 py-1 rounded-full"
-              [ngClass]="{
-                'bg-green-100 text-green-700': workout.intensity === 'Low',
-                'bg-yellow-100 text-yellow-700': workout.intensity === 'Medium',
-                'bg-red-100 text-red-700': workout.intensity === 'High'
-              }">
+        <span
+          class="text-xs font-semibold px-2 py-1 rounded-full"
+          [ngClass]="{
+            'bg-green-100 text-green-700': workout.intensity === 'Low',
+            'bg-yellow-100 text-yellow-700': workout.intensity === 'Medium',
+            'bg-red-100 text-red-700': workout.intensity === 'High'
+          }"
+        >
           {{ workout.intensity }}
         </span>
       </div>

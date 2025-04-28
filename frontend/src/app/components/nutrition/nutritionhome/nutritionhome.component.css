@@ -1,0 +1,50 @@
+/*Filename: nutrition.component.css*/
+
+.nutrition-container {
+    text-align: center;
+    padding: 40px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 40px;
+  }
+  
+  .meals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .meal-card {
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .meal-icon {
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  
+  .meal-card h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .meal-card p {
+    font-size: 16px;
+    color: #666;
+  }
