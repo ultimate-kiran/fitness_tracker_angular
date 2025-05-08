@@ -56,3 +56,83 @@
   .view-recipe-btn:hover {
     background-color: #145a32;
   }
+  .breakfast-container {
+    padding: 20px;
+  }
+  
+  .recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .recipe-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recipe-content {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .recipe-content h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+  }
+  
+  .recipe-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+  
+  .view-recipe-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .view-recipe-btn:hover {
+    background-color: #0056b3;
+  }
+  /* Back Button */
+.back-button-wrapper {
+  margin-bottom: 24px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-3px);
+  background: #f5f3ff;
+  color: #6D28D9;
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.2);
+}
+
+.back-button svg {
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover svg {
+  transform: translateX(-2px);
+}

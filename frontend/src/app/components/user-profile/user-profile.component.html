@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="mb-4">
+    <button class="back-button" (click)="goToDashboard()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Dashboard
+    </button>
+  </div>
+    <div class="profile-wrapper">
+      <!-- Messages -->
+      <div *ngIf="successMsg" class="message success">
+        {{ successMsg }}
+      </div>
+      <div *ngIf="errorMsg" class="message error">
+        {{ errorMsg }}
+      </div>
+  
+      <h2 class="profile-title">User Profile</h2>
+  
+      <div class="profile-details">
+        <div *ngIf="!isEditing; else editForm">
+          <div class="detail-item">
+            <span class="detail-label">Name:</span>
+            <span class="detail-value">{{ user.username }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Height:</span>
+            <span class="detail-value">{{ user.height }} cm</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Weight:</span>
+            <span class="detail-value">{{ user.weight }} kg</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">{{ user.email }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Age:</span>
+            <span class="detail-value">{{ user.age || 'Not set' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Gender:</span>
+            <span class="detail-value">{{ user.gender || 'Not set' }}</span>
+          </div>
+          <button class="edit-button" (click)="toggleEdit()">Edit Profile</button>
+        </div>
+  
+        <ng-template #editForm>
+          <form (ngSubmit)="saveProfile()">
+            <div class="form-group">
+              <label for="username" class="form-label">Name</label>
+              <input type="text" id="username" [(ngModel)]="user.username" name="username" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="height" class="form-label">Height (cm)</label>
+              <input type="number" id="height" [(ngModel)]="user.height" name="height" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="weight" class="form-label">Weight (kg)</label>
+              <input type="number" id="weight" [(ngModel)]="user.weight" name="weight" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" [(ngModel)]="user.email" name="email" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label for="password" class="form-label">Password (leave blank to keep unchanged)</label>
+              <input type="password" id="password" [(ngModel)]="user.password" name="password" class="form-input" placeholder="Enter new password" />
+            </div>
+            <div class="form-group">
+              <label for="age" class="form-label">Age</label>
+              <input type="number" id="age" [(ngModel)]="user.age" name="age" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label for="gender" class="form-label">Gender</label>
+              <select id="gender" [(ngModel)]="user.gender" name="gender" class="form-input">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button type="button" (click)="toggleEdit()" class="cancel-button">Cancel</button>
+              <button type="submit" class="save-button">Save</button>
+            </div>
+          </form>
+        </ng-template>
+      </div>
+    </div>
+  </div>

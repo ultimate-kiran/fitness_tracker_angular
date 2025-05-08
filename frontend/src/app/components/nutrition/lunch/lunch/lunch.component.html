@@ -1,9 +1,16 @@
 <div class="container">
-    <h2>Lunch Recipes</h2>
-    <div class="recipe-grid">
-      <div *ngFor="let recipe of lunchRecipes" class="recipe-card">
-        <h3>{{ recipe.Title }}</h3>
-        <button (click)="viewRecipe(recipe.Title)">View Recipe</button>
-      </div>
+  <a (click)="navigateToNutritionHome()" class="back-button">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+    Back to Nutrition Home
+  </a>
+  <h2>Lunch Recipes</h2>
+  <div class="recipe-grid">
+    <div *ngFor="let recipe of lunchRecipes" class="recipe-card">
+      <h3>{{ recipe.Title }}</h3>
+      <img [src]="getImagePath(recipe.Image_Name)" [alt]="recipe.Title" class="recipe-image" />
+      <button (click)="viewRecipe(recipe.Title)">View Recipe</button>
     </div>
   </div>
+</div>

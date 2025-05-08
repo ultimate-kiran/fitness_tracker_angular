@@ -1,58 +1,75 @@
 <div class="container">
-    <div class="sidebar">
-      <div class="search-bar">
-        <input type="text" placeholder="Search users" />
-      </div>
-      <div class="menu">
-        <div class="menu-item">Feed</div>
-        <div class="menu-item">Routines</div>
-        <div class="menu-item active">Exercises</div>
-        <div class="menu-item">Profile</div>
-        <div class="menu-item">Settings</div>
-      </div>
-      <button class="pro-button">Hevy PRO <span>Unlock</span></button>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Back to Dashboard Button -->
+    <div class="mb-4">
+      <button class="back-button" (click)="goToDashboard()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Dashboard
+      </button>
     </div>
-  
-    <div class="main-content">
-      <h1>Exercise</h1>
-      <div class="filters">
-        <select [(ngModel)]="selectedEquipment" (ngModelChange)="onEquipmentChange()">
-          <option *ngFor="let equip of equipments" [value]="equip">{{equip}}</option>
-        </select>
-        <select [(ngModel)]="selectedMuscle" (ngModelChange)="onMuscleChange()">
-          <option *ngFor="let muscle of muscles" [value]="muscle">{{muscle}}</option>
-        </select>
+
+    <h1>Exercises</h1>
+    <div class="filters">
+      <select [(ngModel)]="selectedEquipment" (ngModelChange)="onEquipmentChange()">
+        <option *ngFor="let equip of equipments" [value]="equip">{{equip}}</option>
+      </select>
+      <select [(ngModel)]="selectedMuscle" (ngModelChange)="onMuscleChange()">
+        <option *ngFor="let muscle of muscles" [value]="muscle">{{muscle}}</option>
+      </select>
+      <div class="search-wrapper">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
         <input type="text" placeholder="Search Exercises" [(ngModel)]="searchQuery" (ngModelChange)="filterExercises()" />
       </div>
-      <div class="exercise-library">
-        <h2>Library</h2>
-        <div class="filter-options">
-          <span>{{selectedEquipment}}</span>
-          <span>{{selectedMuscle}}</span>
+    </div>
+
+    <!-- Exercise Library -->
+    <div class="exercise-library">
+      <h2>Library</h2>
+      <div *ngIf="selectedExercise" class="exercise-preview bg-white p-6 mt-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ selectedExercise.name }}</h2>
+        <div class="flex items-center">
+          <img class="preview-img" [src]="'assets/images' + selectedExercise.gif" alt="{{ selectedExercise.name }}" />
+          <div class="text-gray-700 space-y-2">
+            <p><strong>Equipment:</strong> {{ selectedExercise.equipment }}</p>
+            <p><strong>Primary Muscle Group:</strong> {{ selectedExercise.primaryMuscle }}</p>
+            <p *ngIf="selectedExercise.secondaryMuscles?.length">
+              <strong>Secondary Muscles:</strong> {{ selectedExercise.secondaryMuscles.join(', ') }}
+            </p>
+          </div>
         </div>
-        <div class="popular-exercises">
-          <h3>Popular Exercises</h3>
-          <div class="exercise-list" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-            <div *ngFor="let exercise of filteredExercises" class="exercise-item">
-              <div style="display: flex; align-items: center;">
-                <input type="checkbox" [(ngModel)]="exercise.isSelected" (ngModelChange)="onExerciseSelectionChange(exercise)" [ngModelOptions]="{standalone: true}" />
-                <img [src]="exercise.gif || 'https://via.placeholder.com/50x50'" [alt]="exercise.name" style="margin-left: 10px;" />
-                <div class="exercise-details" style="margin-left: 10px;">
-                  <span>{{exercise.name}}</span>
-                  <span>({{exercise.equipment}}){{exercise.primaryMuscle | lowercase}}</span>
-                </div>
+      </div>
+      <div class="filter-options">
+        <span>{{selectedEquipment}}</span>
+        <span>{{selectedMuscle}}</span>
+      </div>
+      <div class="popular-exercises">
+        <h3>Popular Exercises</h3>
+        <div class="exercise-list">
+          <div *ngFor="let exercise of filteredExercises; let i = index" class="exercise-item" [@fadeIn]="i">
+            <div class="exercise-content">
+              <input type="checkbox" [(ngModel)]="exercise.isSelected" (ngModelChange)="onExerciseSelectionChange(exercise)" [ngModelOptions]="{standalone: true}" />
+              <img [src]="'assets/images' + exercise.gif" alt="{{ exercise.name }}" />
+              <div class="exercise-details">
+                <span class="exercise-name">{{exercise.name}}</span>
+                <span class="exercise-meta">({{exercise.equipment}}) {{exercise.primaryMuscle | lowercase}}</span>
               </div>
             </div>
           </div>
         </div>
-        <button class="custom-exercise">+ Custom Exercise</button>
-      </div>
-      <!-- Modified: Display selected exercise and add Next button -->
-      <div *ngIf="selectedExercise" class="selected-exercise">
-        <h3>Selected Exercise: {{selectedExercise.name}}</h3>
-        <p>Equipment: {{selectedExercise.equipment}}</p>
-        <p>Muscle: {{selectedExercise.primaryMuscle}}</p>
-        <button (click)="navigateToWorkout()" [disabled]="!selectedExercise">Next</button>
       </div>
     </div>
+
+    <!-- Selected Exercise -->
+    <div *ngIf="selectedExercise" class="selected-exercise">
+      <h3>Selected Exercise: {{selectedExercise.name}}</h3>
+      <p>Equipment: {{selectedEquipment}}</p>
+      <p>Muscle: {{selectedMuscle}}</p>
+      <button (click)="navigateToWorkout()" [disabled]="!selectedExercise">Next</button>
+    </div>
   </div>
+</div>

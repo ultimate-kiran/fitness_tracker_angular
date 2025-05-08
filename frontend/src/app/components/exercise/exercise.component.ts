@@ -19,9 +19,9 @@ export class ExerciseComponent implements OnInit {
   selectedExercise: any = null;
   searchQuery: string = '';
 
-  equipments: string[] = ['All Equipment', 'Barbell', 'Dumbbell', 'Kettlebell', 'Machine', 'Plate', 'Resistance Band', 'Suspension', 'Other', 'None'];
-  muscles: string[] = ['All Muscles', 'Abdominals', 'Abductors', 'Adductors', 'Biceps', 'Lower Back', 'Upper Back', 'Cardio', 'Chest', 'Calves', 'Forearms', 'Glutes', 'Hamstrings', 'Lats', 'Quadriceps', 'Shoulders', 'Triceps', 'Traps', 'Neck', 'Full Body'];
-
+  equipments: string[] = ['All Equipment', 'Barbell', 'Dumbbell', 'Kettlebell', 'Machine','Resistance Band'];
+  muscles: string[] = ['All Muscles', 'Abdominals', 'Abductors', 'Adductors', 'Biceps', 'Cardio', 'Chest', 'Calves', 'Forearms', 'Glutes', 'Hamstrings', 'Lats', 'Quadriceps', 'Shoulders', 'Triceps', 'Traps', 'Neck'];
+  
   constructor(
     private exerciseService: ExerciseService,
     private router: Router
@@ -62,20 +62,17 @@ export class ExerciseComponent implements OnInit {
     this.filterExercises();
   }
 
-  onExerciseSelectionChange(exercise: any) {
-    this.filteredExercises.forEach(e => {
-      if (e !== exercise) {
-        e.isSelected = false;
-      }
-    });
-
-    if (exercise.isSelected) {
+    onExerciseSelectionChange(exercise: any) {
+      this.filteredExercises.forEach(e => {
+        e.isSelected = false; // Uncheck all
+      });
+    
+      exercise.isSelected = true; // Check the clicked one
       this.selectedExercise = exercise;
       console.log('Selected Exercise:', this.selectedExercise);
-    } else {
-      this.selectedExercise = null;
     }
-  }
+    
+  
 
   navigateToWorkout() {
     if (this.selectedExercise) {
@@ -86,4 +83,8 @@ export class ExerciseComponent implements OnInit {
       });
     }
   }
+  goToDashboard() {
+    this.router.navigate(['/userdashboard']);
+  }
+  
 }

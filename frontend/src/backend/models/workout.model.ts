@@ -1,8 +1,12 @@
 export interface Workout {
-  _id?: string;        // optional MongoDB id
-  userId: string;      // the logged-in user id
-  type: string;        // workout type (e.g. Cardio)
-  duration: number;    // duration in minutes
-  date: string | Date; // can be string (input) or Date (from backend)
-  calories: number;    // calories burned
+  _id?: string;            // MongoDB _id is optional
+  userId: string;          // Required: identifies the user
+  type: string; 
+  sets: number;
+  reps: number;
+  intensity: string;
+  timePerRep: number;
+  restTime: number;                    // Type of workout, e.g., "Cardio"        // Duration in minutes
+  date: string;            // Always stored/used as ISO string
+  calories: number;        // Calories burned
 }

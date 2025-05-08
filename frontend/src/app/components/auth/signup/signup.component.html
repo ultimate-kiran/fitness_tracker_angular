@@ -1,14 +1,12 @@
 <div class="signup-container">
   <div class="signup-left">
-    <img src="assets/images/3.jpg" alt="Signup Illustration" style="max-width: 100%; height: auto;"/>
+    <img src="assets/images/3d-gym-equipment (1).jpg" alt="Signup Illustration" />
   </div>
-
 
   <div class="signup-right">
     <h2>Create Account</h2>
 
-
-    <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+    <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="username">Username</label>
         <input
@@ -16,10 +14,18 @@
           id="username"
           name="username"
           [(ngModel)]="user.username"
+          (ngModelChange)="validateUsername()"
           required
+          pattern="[A-Za-z\s]+"
+          #usernameInput="ngModel"
+          [ngClass]="{'invalid': usernameInput.invalid && (usernameInput.dirty || usernameInput.touched), 'valid': usernameInput.valid && (usernameInput.dirty || usernameInput.touched)}"
+          (keydown.enter)="focusNext('weight')"
         />
+        <span *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)" class="error">
+          <span *ngIf="usernameInput.errors?.['required']">Username is required.</span>
+          <span *ngIf="usernameInput.errors?.['pattern']">Username must contain only letters and spaces.</span>
+        </span>
       </div>
-
 
       <div class="form-group">
         <label for="weight">Weight (kg)</label>
@@ -28,10 +34,22 @@
           id="weight"
           name="weight"
           [(ngModel)]="user.weight"
+          (ngModelChange)="validateWeight()"
           required
+          min="30"
+          max="300"
+          #weightInput="ngModel"
+          [disabled]="!isUsernameValid"
+          [ngClass]="{'invalid': weightInput.invalid && (weightInput.dirty || weightInput.touched), 'valid': weightInput.valid && (weightInput.dirty || weightInput.touched)}"
+          (keydown.enter)="focusNext('height')"
         />
+        <span *ngIf="weightInput.invalid && (weightInput.dirty || weightInput.touched)" class="error">
+          <span *ngIf="weightInput.errors?.['required']">Weight is required.</span>
+          <span *ngIf="weightInput.errors?.['min'] || weightInput.errors?.['max']">
+            Weight must be between 30 kg and 300 kg and should be odd number.
+          </span>
+        </span>
       </div>
-
 
       <div class="form-group">
         <label for="height">Height (cm)</label>
@@ -40,10 +58,22 @@
           id="height"
           name="height"
           [(ngModel)]="user.height"
+          (ngModelChange)="validateHeight()"
           required
+          min="100"
+          max="250"
+          #heightInput="ngModel"
+          [disabled]="!isWeightValid"
+          [ngClass]="{'invalid': heightInput.invalid && (heightInput.dirty || heightInput.touched), 'valid': heightInput.valid && (heightInput.dirty || heightInput.touched)}"
+          (keydown.enter)="focusNext('email')"
         />
+        <span *ngIf="heightInput.invalid && (heightInput.dirty || heightInput.touched)" class="error">
+          <span *ngIf="heightInput.errors?.['required']">Height is required.</span>
+          <span *ngIf="heightInput.errors?.['min'] || heightInput.errors?.['max']">
+            Height must be between 100 cm and 250 cm.
+          </span>
+        </span>
       </div>
-
 
       <div class="form-group">
         <label for="email">Email</label>
@@ -52,10 +82,19 @@
           id="email"
           name="email"
           [(ngModel)]="user.email"
+          (ngModelChange)="validateEmail()"
           required
+          pattern="^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$"
+          #emailInput="ngModel"
+          [disabled]="!isHeightValid"
+          [ngClass]="{'invalid': emailInput.invalid && (emailInput.dirty || emailInput.touched), 'valid': emailInput.valid && (emailInput.dirty || emailInput.touched)}"
+          (keydown.enter)="focusNext('password')"
         />
+        <span *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="error">
+          <span *ngIf="emailInput.errors?.['required']">Email is required.</span>
+          <span *ngIf="emailInput.errors?.['pattern']">Please enter a valid email address (e.g., userexample.com or usercollege.ac.in).</span>
+        </span>
       </div>
-
 
       <div class="form-group">
         <label for="password">Password</label>
@@ -64,15 +103,24 @@
           id="password"
           name="password"
           [(ngModel)]="user.password"
+          (ngModelChange)="validatePassword()"
           required
           minlength="8"
           pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
-          title="Password must be at least 8 characters, include one uppercase letter and one number."
+          #passwordInput="ngModel"
+          [disabled]="!isEmailValid"
+          [ngClass]="{'invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched), 'valid': passwordInput.valid && (passwordInput.dirty || passwordInput.touched)}"
         />
+        <span *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error">
+          <span *ngIf="passwordInput.errors?.['required']">Password is required.</span>
+          <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.</span>
+          <span *ngIf="passwordInput.errors?.['pattern']">
+            Password must include at least one uppercase letter and one number.
+          </span>
+        </span>
       </div>
 
-
-      <button type="submit">Sign Up</button>
+      <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
     </form>
   </div>
 </div>

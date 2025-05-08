@@ -65,27 +65,30 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
 
+  console.log('Received login attempt:', { email, password });
+
   if (!email || !password) {
     return res.status(400).json({ message: 'Email and password are required.' });
   }
 
 
   // ✅ Hardcoded admin check
-  if (email === 'kiran2309@gmail.com' && password === 'Kiran@2004') {
+  if ((email === 'admin@gmail.com' && password === 'Admin@1234')) {
     return res.status(200).json({
-      message: 'Admin login successful.',
-      isAdmin: true,
-      user: {
-        id: 'admin-id',
-        username: 'Admin',
-        email
-      }
-    });
+    message: 'Admin login successful.',
+    isAdmin: true,
+    user: {
+    id: 'admin-id',
+    username: 'Admin',
+    email
   }
-
+});
+}
 
   try {
     const user = await User.findOne({ email });
+    console.log(user);
+    console.log(user._id);
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }

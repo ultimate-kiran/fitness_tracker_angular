@@ -5,6 +5,7 @@ import { Workout } from '../../../backend/models/workout.model';
 import { WorkoutService } from '../../services/workout.service';
 import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-workout',
@@ -16,46 +17,74 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class WorkoutComponent implements OnInit {
   workout: Workout = {
     userId: '',
-    type: 'Strength Training', // Default value, will be overridden by selected exercise
-    duration: 0,
+    type: 'Incline Bench Press (Dumbbell)',
+    sets: 0,
+    reps: 0,
+    intensity: '',
+    timePerRep: 0,
+    restTime: 0,
     date: new Date().toISOString().split('T')[0],
     calories: 0,
   };
   workouts: Workout[] = [];
   successMsg = '';
   errorMsg = '';
+  showSuccessModal: boolean = false;
   selectedExercise: any = null;
+  minDate: string = '2025-05-04';
+  visibleTooltips: { [key: string]: boolean } = {
+    workoutType: false,
+    sets: false,
+    reps: false,
+    intensity: false,
+    timePerRep: false,
+    restTime: false,
+    date: false,
+  };
+
+  // Validation flags
+  isSetsValid: boolean = false;
+  isRepsValid: boolean = false;
+  isIntensityValid: boolean = false;
+  isTimePerRepValid: boolean = true; // Can be 0, so default to true
+  isRestTimeValid: boolean = true; // Can be 0, so default to true
+  isDateValid: boolean = false;
+  isFormValid: boolean = false;
 
   constructor(
     private workoutService: WorkoutService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
     this.initializeUserId();
-    // Retrieve selected exercise from navigation state using ActivatedRoute
+
+    const navigation = this.router.getCurrentNavigation();
+    const stateExercise = navigation?.extras?.state?.['selectedExercise'];
+
     this.route.queryParams.subscribe(params => {
       if (params['selectedExercise']) {
-        this.selectedExercise = JSON.parse(params['selectedExercise']);
-        console.log('Received Selected Exercise:', this.selectedExercise);
-        // Set workout type to the exercise name directly (as per image)
+        try {
+          this.selectedExercise = JSON.parse(params['selectedExercise']);
+          console.log('Received Selected Exercise from query:', this.selectedExercise);
+        } catch (e) {
+          console.error('Error parsing selectedExercise:', e);
+          this.errorMsg = 'Invalid exercise data.';
+        }
+      } else if (stateExercise) {
+        this.selectedExercise = stateExercise;
+        console.log('Received Selected Exercise from navigation state:', this.selectedExercise);
+      }
+
+      if (this.selectedExercise && this.selectedExercise.name) {
         this.workout.type = this.selectedExercise.name;
         console.log('Set Workout Type:', this.workout.type);
       } else {
-        console.warn('No selected exercise found in query params.');
-        // Fallback: Check state from navigation
-        const navigation = this.router.getCurrentNavigation();
-        if (navigation?.extras?.state?.['selectedExercise']) {
-          this.selectedExercise = navigation.extras.state['selectedExercise'];
-          console.log('Received Selected Exercise from state:', this.selectedExercise);
-          this.workout.type = this.selectedExercise.name;
-          console.log('Set Workout Type from state:', this.workout.type);
-        } else {
-          console.warn('No selected exercise found in navigation state.');
-          this.workout.type = 'Strength Training'; // Default fallback
-        }
+        this.workout.type = 'Incline Bench Press (Dumbbell)';
+        console.warn('No valid selected exercise found, defaulting to Incline Bench Press (Dumbbell).');
       }
     });
 
@@ -64,11 +93,12 @@ export class WorkoutComponent implements OnInit {
     } else {
       this.errorMsg = 'User not logged in. Please log in to continue.';
     }
+
+    this.validateInputs();
   }
 
   private initializeUserId() {
     const userId = this.authService.getLoggedInUserId();
-    console.log('User ID:', userId);
     if (!userId) {
       this.errorMsg = 'Please log in to view or add workouts.';
       return;
@@ -94,22 +124,59 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
+  validateInputs() {
+    // Validate Sets (1 to 6)
+    this.isSetsValid = this.workout.sets >= 1 && this.workout.sets <= 6;
+
+    // Validate Reps (1 to 15)
+    this.isRepsValid = this.workout.reps >= 1 && this.workout.reps <= 15;
+
+    // Validate Intensity (must be selected)
+    this.isIntensityValid = !!this.workout.intensity && ['Low', 'Moderate', 'High'].includes(this.workout.intensity);
+
+    // Validate Time per Rep (0 to 4)
+    this.isTimePerRepValid = this.workout.timePerRep >= 0 && this.workout.timePerRep <= 4;
+
+    // Validate Rest Time (0 to 180)
+    this.isRestTimeValid = this.workout.restTime >= 0 && this.workout.restTime <= 180;
+
+    // Validate Date (not in the past)
+    const selectedDate = new Date(this.workout.date);
+    const today = new Date('2025-05-04');
+    today.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+    this.isDateValid = !!this.workout.date && selectedDate >= today;
+
+    // Overall form validity
+    this.isFormValid =
+      this.isSetsValid &&
+      this.isRepsValid &&
+      this.isIntensityValid &&
+      this.isTimePerRepValid &&
+      this.isRestTimeValid &&
+      this.isDateValid;
+  }
+
   postWorkout() {
-    if (!this.isValidWorkout()) {
-      this.errorMsg = 'Please fill in all required fields correctly.';
+    if (!this.isFormValid) {
+      this.errorMsg = 'Please correct all fields before submitting.';
       setTimeout(() => (this.errorMsg = ''), 3000);
       return;
     }
 
-    this.workout.date = new Date(this.workout.date).toISOString();
+    const workoutToPost = {
+      ...this.workout,
+      userId: this.workout.userId,
+      type: this.selectedExercise?.name || 'Custom Workout',
+      date: new Date(this.workout.date).toISOString(),
+    };
 
-    this.workoutService.postWorkout(this.workout).subscribe({
+    this.workoutService.postWorkout(workoutToPost).subscribe({
       next: () => {
-        this.successMsg = 'Workout posted successfully!';
+        this.showSuccessModal = true;
         this.errorMsg = '';
         this.loadWorkouts();
         this.resetWorkoutForm();
-        setTimeout(() => (this.successMsg = ''), 3000);
       },
       error: (err) => {
         this.errorMsg = `Failed to post workout: ${err.error?.message || 'Invalid request'}`;
@@ -119,55 +186,95 @@ export class WorkoutComponent implements OnInit {
     });
   }
 
-  private isValidWorkout(): boolean {
-    return (
-      !!this.workout.userId &&
-      !!this.workout.type &&
-      this.workout.duration > 0 &&
-      !!this.workout.date &&
-      this.workout.calories >= 0
-    );
-  }
-
   private resetWorkoutForm() {
     this.workout = {
       userId: this.workout.userId,
-      type: this.workout.type, // Preserve the read-only type
-      duration: 0,
+      type: this.selectedExercise?.name || 'Incline Bench Press (Dumbbell)',
+      sets: 0,
+      reps: 0,
+      intensity: '',
+      timePerRep: 0,
+      restTime: 0,
       date: new Date().toISOString().split('T')[0],
       calories: 0,
     };
+    this.validateInputs();
   }
 
-  // Removed: determineWorkoutType (since we're using the exercise name directly)
-
-  // New: Calculate calories based on exercise and duration
   calculateCalories() {
-    if (!this.selectedExercise || !this.workout.duration || this.workout.duration <= 0) {
+    // Cap values at their maximums to prevent invalid calculations
+    if (this.workout.sets < 0) this.workout.sets = 0;
+    if (this.workout.sets > 6) this.workout.sets = 6;
+    if (this.workout.reps < 0) this.workout.reps = 0;
+    if (this.workout.reps > 15) this.workout.reps = 15;
+    if (this.workout.timePerRep < 0) this.workout.timePerRep = 0;
+    if (this.workout.timePerRep > 4) this.workout.timePerRep = 4;
+    if (this.workout.restTime < 0) this.workout.restTime = 0;
+    if (this.workout.restTime > 180) this.workout.restTime = 180;
+
+    if (
+      !this.selectedExercise ||
+      !this.workout.sets ||
+      !this.workout.reps ||
+      !this.workout.intensity ||
+      this.workout.sets <= 0 ||
+      this.workout.reps <= 0
+    ) {
       this.workout.calories = 0;
       return;
     }
 
-    // MET values for different exercises (approximate)
-    const metValues: { [key: string]: number } = {
-      'Barbell Curl': 4.0, // Strength training, moderate effort
-      'Kettlebell Swing': 8.0, // High-intensity strength training
-      'Kettlebell Goblet Squat': 6.0, // Moderate to high intensity
-      'Treadmill Running': 9.0, // Cardio, running
-      'Yoga Flow': 3.0, // Yoga, light effort
-      'HIIT Session': 8.0, // High-intensity interval training
-    };
+    this.http.get(`http://localhost:5000/api/exercises/name/${this.selectedExercise.name}`).subscribe({
+      next: (exercise: any) => {
+        let met = exercise.MET || 5.0;
+        const intensityFactors: { [key: string]: number } = {
+          Low: 0.8,
+          Moderate: 1.0,
+          High: 1.2,
+        };
+        const intensityFactor = intensityFactors[this.workout.intensity] || 1.0;
+        met *= intensityFactor;
 
-    // Default MET value if exercise is not in the list
-    const met = metValues[this.selectedExercise.name] || 4.0; // Default to moderate strength training
+        this.http.get(`http://localhost:5000/api/users/${this.workout.userId}`).subscribe({
+          next: (users: any) => {
+            const weightKg = users[0].weight || 50;
+            const timePerSetSeconds = this.workout.reps * this.workout.timePerRep;
+            const activeTimeSeconds = this.workout.sets * timePerSetSeconds;
+            const restTimeTotalSeconds = (this.workout.sets - 1) * this.workout.restTime;
+            const totalTimeSeconds = activeTimeSeconds + restTimeTotalSeconds;
+            const totalTimeHours = totalTimeSeconds / 3600;
 
-    // Assume average user weight of 70 kg (can be customized later)
-    const weightKg = 70;
-    // Formula: Calories = MET * weight (kg) * duration (hours)
-    const durationHours = this.workout.duration / 60;
-    const calories = met * weightKg * durationHours;
+            const calories = met * weightKg * totalTimeHours;
+            this.workout.calories = Math.round(calories);
+          },
+          error: (err) => {
+            console.error('Error fetching user weight:', err);
+            this.workout.calories = 0;
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Error fetching MET value:', err);
+        this.workout.calories = 0;
+      },
+    });
+  }
 
-    this.workout.calories = Math.round(calories); // Round to nearest integer
-    console.log(`Calculated Calories: ${this.workout.calories} (MET: ${met}, Duration: ${this.workout.duration} mins)`);
+  toggleTooltip(field: string) {
+    Object.keys(this.visibleTooltips).forEach(key => {
+      if (key !== field) {
+        this.visibleTooltips[key] = false;
+      }
+    });
+    this.visibleTooltips[field] = !this.visibleTooltips[field];
+  }
+
+  navigateToExercise() {
+    this.router.navigate(['/exercise']);
+  }
+
+  navigateToHome() {
+    this.showSuccessModal = false;
+    this.router.navigate(['/userdashboard']);
   }
 }

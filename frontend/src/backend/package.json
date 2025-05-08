@@ -13,8 +13,10 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
+    "chart.js": "^4.4.9",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "mongoose": "^8.13.2"
+    "mongoose": "^8.13.2",
+    "ng2-charts": "^8.0.0"
   }
 }

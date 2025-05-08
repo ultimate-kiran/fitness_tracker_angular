@@ -38,4 +38,7 @@ export class DinnerComponent implements OnInit {
   viewRecipe(Title: string): void {
     this.router.navigate(['/viewrecipe', Title]);
   }
+  navigateToNutritionHome(): void {
+    this.router.navigate(['/nutritionhome']);
+  }
 }

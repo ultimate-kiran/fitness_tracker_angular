@@ -1,170 +1,77 @@
-:host {
-  display: block;
-}
-
-.bg-gray-50 {
-  background-color: #f9fafb;
-}
-
+/* Container */
 .container {
-  width: 100%;
   max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin: 0 auto;
+  padding: 16px;
 }
 
-.bg-white {
-  background-color: #ffffff;
+/* Totals Cards */
+.totals-card {
+  transition: all 0.2s ease-in-out;
 }
 
-.rounded-lg {
-  border-radius: 0.5rem;
+.totals-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.shadow {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+.calories-card:hover .progress-bar {
+  background-color: #ef4444; /* Tailwind's red-600 */
 }
 
-.p-6 {
-  padding: 1.5rem;
+.carbs-card:hover .progress-bar {
+  background-color: #facc15; /* Tailwind's yellow-500 */
 }
 
-.text-sm {
-  font-size: 0.875rem;
+.protein-card:hover .progress-bar {
+  background-color: #22c55e; /* Tailwind's green-600 */
 }
 
-.font-medium {
-  font-weight: 500;
+.fat-card:hover .progress-bar {
+  background-color: #3b82f6; /* Tailwind's blue-600 */
 }
 
-.text-gray-500 {
-  color: #6b7280;
+.progress-bar {
+  transition: background-color 0.2s ease-in-out;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
+/* Table Rows */
+tbody tr {
+  transition: background-color 0.15s ease-in-out;
 }
 
-.font-bold {
-  font-weight: 700;
+tbody tr:hover {
+  background-color: #f9fafb; /* Tailwind's gray-50 */
 }
 
-.text-gray-900 {
-  color: #111827;
+/* Modal */
+.modal {
+  transition: box-shadow 0.2s ease-in-out;
 }
 
-.mt-1 {
-  margin-top: 0.25rem;
+.modal:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.h-2 {
-  height: 0.5rem;
+input {
+  transition: border-color 0.15s ease-in-out;
 }
 
-.mt-4 {
-  margin-top: 1rem;
+input:hover {
+  border-color: #9ca3af; /* Tailwind's gray-400 */
 }
 
-.bg-gray-200 {
-  background-color: #e5e7eb;
+/* Buttons */
+button {
+  transition: all 0.2s ease-in-out;
 }
 
-.bg-blue-500 {
-  background-color: #3b82f6;
+button.bg-gray-300:hover {
+  background-color: #9ca3af; /* Tailwind's gray-400 */
+  transform: scale(1.05);
 }
 
-.h-full {
-  height: 100%;
-}
-
-.max-h-\[600px\] {
-  max-height: 600px;
-}
-
-.overflow-y-auto {
-  overflow-y: auto;
-}
-
-.pr-2 {
-  padding-right: 0.5rem;
-}
-
-.grid {
-  display: grid;
-}
-
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-.md\:grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.lg\:grid-cols-4 {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.gap-4 {
-  gap: 1rem;
-}
-
-.mb-6 {
-  margin-bottom: 1.5rem;
-}
-
-.border-b {
-  border-bottom-width: 1px;
-}
-
-.flex {
-  display: flex;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.text-lg {
-  font-size: 1.125rem;
-}
-
-.mb-4 {
-  margin-bottom: 1rem;
-}
-
-.px-4 {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-}
-
-.bg-blue-500 {
-  background-color: #3b82f6;
-}
-
-.text-white {
-  color: #ffffff;
-}
-
-.rounded-md {
-  border-radius: 0.375rem;
-}
-
-.mr-1 {
-  margin-right: 0.25rem;
-}
-
-.hover\:shadow-md:hover {
-  box-shadow: 0 
+button.bg-blue-500:hover {
+  background-color: #2563eb; /* Tailwind's blue-600 */
+  transform: scale(1.05);
 }

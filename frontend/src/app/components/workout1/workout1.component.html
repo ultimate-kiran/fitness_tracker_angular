@@ -1,41 +1,123 @@
 <div class="container">
+  <div class="back-button-wrapper">
+    <a (click)="navigateToExercise()" class="back-button">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back to Exercises
+    </a>
+  </div>
   <div class="left-form">
     <h2>🏋️ Post New Workout</h2>
-    <!-- Modified: Display selected exercise -->
+    <!-- Display selected exercise -->
     <div *ngIf="selectedExercise" class="selected-exercise">
       <label>Workout Type</label>
       <p>{{ selectedExercise.name }}</p>
+      <span class="info-icon" (click)="toggleTooltip('workoutType')">i
+        <span class="tooltip" [ngClass]="{'visible': visibleTooltips['workoutType']}">The type of workout selected (e.g., Barbell Curl). This is the exercise you chose from the library.</span>
+      </span>
     </div>
 
-    <label>Duration (minutes)</label>
-    <input type="number" [(ngModel)]="workout.duration" (ngModelChange)="calculateCalories()">
+    <label>Sets</label>
+    <div class="input-wrapper">
+      <input type="number" class="form-input" [ngClass]="{'input-error': !isSetsValid, 'input-success': isSetsValid && workout.sets > 0}" [(ngModel)]="workout.sets" (ngModelChange)="validateInputs(); calculateCalories()" min="1" max="6">
+      <span class="info-icon" (click)="toggleTooltip('sets')">i
+        <span class="tooltip" [ngClass]="{'visible': visibleTooltips['sets']}">Number of sets for the workout. A set is a group of consecutive repetitions. Must be between 1 and 6.</span>
+      </span>
+    </div>
+    <div class="error-text" *ngIf="!isSetsValid">Enter between 1 to 6</div>
+
+    <label>Reps per Set</label>
+    <div class="input-wrapper">
+      <input type="number" class="form-input" [ngClass]="{'input-error': !isRepsValid, 'input-success': isRepsValid && workout.reps > 0}" [(ngModel)]="workout.reps" (ngModelChange)="validateInputs(); calculateCalories()" min="1" max="15">
+      <span class="info-icon" (click)="toggleTooltip('reps')">i
+        <span class="tooltip" [ngClass]="{'visible': visibleTooltips['reps']}">Number of repetitions in each set. A rep is one complete motion of the exercise. Must be between 1 and 15.</span>
+      </span>
+    </div>
+    <div class="error-text" *ngIf="!isRepsValid">Enter between 1 to 15</div>
+
+    <label>Total Reps</label>
+    <div class="input-wrapper">
+      <input type="number" class="form-input" [value]="workout.sets * workout.reps" readonly>
+    </div>
+
+    <label>Intensity</label>
+    <div class="input-wrapper">
+      <select class="form-input" [ngClass]="{'input-error': !isIntensityValid, 'input-success': isIntensityValid}" [(ngModel)]="workout.intensity" (ngModelChange)="validateInputs(); calculateCalories()">
+        <option value="" disabled>Select Intensity</option>
+        <option value="Low">Low</option>
+        <option value="Moderate">Moderate</option>
+        <option value="High">High</option>
+      </select>
+      <span class="info-icon" (click)="toggleTooltip('intensity')">i
+        <span class="tooltip" [ngClass]="{'visible': visibleTooltips['intensity']}">The intensity level of your workout. Higher intensity burns more calories: Low (light effort), Moderate (medium effort), High (maximum effort).</span>
+      </span>
+    </div>
+    <div class="error-text" *ngIf="!isIntensityValid">Please select an intensity</div>
+
+    <label>Time per Rep (seconds)</label>
+    <div class="input-wrapper">
+      <input type="number" class="form-input" [ngClass]="{'input-error': !isTimePerRepValid, 'input-success': isTimePerRepValid}" [(ngModel)]="workout.timePerRep" (ngModelChange)="validateInputs(); calculateCalories()" min="0" max="4">
+      <span class="info-icon" (click)="toggleTooltip('timePerRep')">i
+        <span class="tooltip" [ngClass]="{'visible': visibleTooltips['timePerRep']}">Time taken to complete one repetition in seconds. Used to calculate total active time. Must be between 0 and 4 seconds.</span>
+      </span>
+    </div>
+    <div class="error-text" *ngIf="!isTimePerRepValid">Enter between 0 to 4</div>
+
+    <label>Rest between Sets (seconds)</label>
+    <div class="input-wrapper">
+      <input type="number" class="form-input" [ngClass]="{'input-error': !isRestTimeValid, 'input-success': isRestTimeValid}" [(ngModel)]="workout.restTime" (ngModelChange)="validateInputs(); calculateCalories()" min="0" max="180">
+      <span class="info-icon" (click)="toggleTooltip('restTime')">i
+        <span class="tooltip" [ngClass]="{'visible': visibleTooltips['restTime']}">Rest time between sets in seconds. This is the pause between each set. Must be between 0 and 180 seconds.</span>
+      </span>
+    </div>
+    <div class="error-text" *ngIf="!isRestTimeValid">Enter between 0 to 180</div>
 
     <label>Date</label>
-    <input type="date" [(ngModel)]="workout.date">
+    <div class="input-wrapper">
+      <input type="date" class="form-input date-input" [ngClass]="{'input-error': !isDateValid, 'input-success': isDateValid}" [(ngModel)]="workout.date" (ngModelChange)="validateInputs()" [min]="minDate">
+      <span class="info-icon date-info-icon" (click)="toggleTooltip('date')">i
+        <span class="tooltip" [ngClass]="{'visible': visibleTooltips['date']}">The date of your workout. Select the day you performed this workout. Past dates are not allowed.</span>
+      </span>
+    </div>
+    <div class="error-text" *ngIf="!isDateValid">Please select a valid date (not in the past)</div>
 
     <label>Calories Burned</label>
-    <input type="number" [value]="workout.calories" readonly>
+    <input type="number" class="form-input" [value]="workout.calories" readonly>
 
-    <button (click)="postWorkout()">+ Post Workout</button>
+    <button [disabled]="!isFormValid" (click)="postWorkout()" [ngClass]="{'button-disabled': !isFormValid}">Do Workout</button>
 
-    <div class="success" *ngIf="successMsg">{{ successMsg }}</div>
+    <div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
   </div>
-
   <div class="right-table">
     <h2>🏆 Past Workouts</h2>
     <table>
       <tr>
         <th>🏷️ Type</th>
-        <th>⏱️ Duration</th>
+        <th>🔢 Sets</th>
+        <th>🔢 Reps/Set</th>
+        <th>💪 Intensity</th>
         <th>🔥 Calories</th>
         <th>📅 Date</th>
       </tr>
       <tr *ngFor="let w of workouts">
         <td>{{ w.type }}</td>
-        <td>{{ w.duration }}</td>
+        <td>{{ w.sets }}</td>
+        <td>{{ w.reps }}</td>
+        <td>{{ w.intensity }}</td>
         <td>{{ w.calories }}</td>
         <td>{{ w.date | date: 'MMM d, y' }}</td>
       </tr>
     </table>
+  </div>
+
+  <!-- Success Modal -->
+  <div *ngIf="showSuccessModal" class="success-modal-overlay">
+    <div class="success-modal">
+      <div class="success-message">
+        You have successfully burned calories 🔥
+      </div>
+      <button class="continue-button" (click)="navigateToHome()" aria-label="Continue to home">Continue</button>
+    </div>
   </div>
 </div>

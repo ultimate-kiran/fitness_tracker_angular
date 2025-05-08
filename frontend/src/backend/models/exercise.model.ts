@@ -6,6 +6,7 @@ export interface IExercise extends Document {
   primaryMuscle: string;
   secondaryMuscle: string;
   gif: string;
+  met: number;
 }
 
 const exerciseSchema = new Schema<IExercise>({
@@ -13,7 +14,8 @@ const exerciseSchema = new Schema<IExercise>({
   equipment: { type: String, required: true },
   primaryMuscle: { type: String, required: true },
   secondaryMuscle: { type: String, required: true },
-  gif: { type: String, required: true },
+  gif: { type: String, required: false },
+  met: { type: Number, required: false }
 });
 
 export default model<IExercise>('Exercise', exerciseSchema, 'exercise');

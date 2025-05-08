@@ -1,60 +1,439 @@
+/* Container */
 .container {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    gap: 30px;
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding: 32px;
+  gap: 32px;
+  position: relative;
+}
+
+/* Back Button */
+.back-button-wrapper {
+  margin-bottom: 24px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-3px);
+  background: #f5f3ff;
+  color: #6D28D9;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+}
+
+.back-button svg {
+  transition: transform 0.2s ease;
+}
+
+.back-button:hover svg {
+  transform: translateX(-2px);
+}
+
+/* Left Form */
+.left-form {
+  flex: 1;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.left-form:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.left-form h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+  transition: color 0.2s ease;
+}
+
+.left-form h2:hover {
+  color: #6D28D9;
+}
+
+.selected-exercise {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.selected-exercise label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.selected-exercise p {
+  font-size: 16px;
+  color: #1f2937;
+  transition: color 0.2s ease;
+}
+
+.selected-exercise p:hover {
+  color: #4b5563;
+}
+
+.left-form label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+.left-form label:hover {
+  color: #1f2937;
+}
+
+/* Input Wrapper for positioning the info icon */
+.input-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d4d4d8;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #f5f3ff;
+  transition: all 0.2s ease;
+}
+
+.form-input:hover {
+  border-color: #6D28D9;
+  background: #fafaff;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #6D28D9;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+}
+
+/* Validation Styles */
+.input-error {
+  border-color: #ef4444 !important; /* Red-500 */
+  background: #fef2f2 !important; /* Red-50 */
+}
+
+.input-success {
+  border-color: #22c55e !important; /* Green-500 */
+  background: #f0fdf4 !important; /* Green-50 */
+}
+
+/* Error Text */
+.error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Style for date input to match other inputs */
+input[type="date"] {
+  width: 100%;
+  padding: 10px 40px 10px 14px;
+  border: 1px solid #d4d4d8;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #f5f3ff;
+  transition: all 0.2s ease;
+}
+
+input[type="date"]:hover {
+  border-color: #6D28D9;
+  background: #fafaff;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #6D28D9;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.1);
+}
+
+/* Ensure the date input placeholder text matches the design */
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #6b7280;
+}
+
+/* Info Icon */
+.info-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  background: #e5e7eb;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.info-icon:hover {
+  background: #6D28D9;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Adjust the info icon position for the date field to avoid overlap with the calendar icon */
+.date-info-icon {
+  right: 34px;
+}
+
+/* Tooltip */
+.info-icon .tooltip {
+  visibility: hidden;
+  width: 200px;
+  background: #1f2937;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.info-icon .tooltip.visible {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* Adjust for selected-exercise info icon */
+.selected-exercise .info-icon {
+  position: static;
+  display: inline-flex;
+  margin-left: 8px;
+  transform: none;
+}
+
+.left-form button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #6D28D9 0%, #5B21B6 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.left-form button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(90deg, #5B21B6 0%, #4C1D95 100%);
+  box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+}
+
+.left-form button.button-disabled {
+  background: #d1d5db; /* Gray-300 */
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Success Modal */
+.success-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.success-modal {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  transform: scale(0.9);
+  animation: modalFadeIn 0.3s ease forwards;
+}
+
+@keyframes modalFadeIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
-  
-  .left-form, .right-table {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 0 10px #ccc;
-    width: 45%;
+}
+
+.success-message {
+  font-size: 18px;
+  font-weight: 600;
+  color: #065f46;
+}
+
+.continue-button {
+  width: 60%;
+  padding: 12px;
+  background: linear-gradient(90deg, #6D28D9 0%, #5B21B6 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.continue-button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(90deg, #5B21B6 0%, #4C1D95 100%);
+  box-shadow: 0 4px 12px rgba(91, 33, 182, 0.3);
+}
+
+.error {
+  margin-top: 16px;
+  padding: 10px;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 6px;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.error:hover {
+  background: #fecaca;
+}
+
+/* Right Table */
+.right-table {
+  flex: 1;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.right-table:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.right-table h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+  transition: color 0.2s ease;
+}
+
+.right-table h2:hover {
+  color: #6D28D9;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+th {
+  background: #f5f3ff;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+tr {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.2s ease;
+}
+
+tr:hover {
+  background: #f5f3ff;
+}
+
+tr:last-child {
+  border-bottom: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
   }
-  
-  h2 {
-    margin-bottom: 15px;
+
+  .back-button-wrapper {
+    margin-bottom: 16px;
   }
-  
-  label {
-    font-weight: bold;
-    display: block;
-    margin-top: 10px;
+
+  .info-icon .tooltip {
+    width: 150px;
+    left: 0;
+    transform: none;
   }
-  
-  input, select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #aaa;
+
+  .date-info-icon {
+    right: 10px;
   }
-  
-  button {
-    background: green;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
+
+  .success-modal {
+    width: 95%;
   }
-  
-  .success {
-    margin-top: 10px;
-    color: green;
-    font-weight: bold;
+
+  .continue-button {
+    width: 80%;
   }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  th, td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-  }
-  
+}

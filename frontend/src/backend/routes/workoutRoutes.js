@@ -5,14 +5,13 @@ const router = express.Router();
 
 // Add a new workout
 router.post('/', async (req, res) => {
-  const { userId, type, duration, date, calories } = req.body;
+  const { userId, type, sets, reps, intensity, timePerRep, restTime, date, calories } = req.body;
 
   // Validate required fields
-  if (!userId || !type || !duration || !date || !calories) {
+  if (!userId || !type || !sets || !reps || !intensity || !timePerRep || !restTime || !date || !calories) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
-  // Validate userId as a valid ObjectId
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(400).json({ message: 'Invalid user ID.' });
   }
@@ -21,7 +20,11 @@ router.post('/', async (req, res) => {
     const workout = await Workout.create({
       userId,
       type,
-      duration,
+      sets,
+      reps,
+      intensity,
+      timePerRep,
+      restTime,
       date,
       calories,
     });
@@ -31,8 +34,8 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Failed to save workout.' });
   }
 });
-
 // Get all workouts for a specific user
+
 router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
 
@@ -47,7 +50,9 @@ router.get('/:userId', async (req, res) => {
   }
 
   try {
+    console.log(`Fetching workouts for userId: ${userId}`); // Debug log
     const workouts = await Workout.find({ userId: req.params.userId });
+    console.log(`Found ${workouts.length} workouts for userId: ${userId}`); // Debug log
     res.json(workouts);
   } catch (err) {
     console.error('Workout fetch error:', err);

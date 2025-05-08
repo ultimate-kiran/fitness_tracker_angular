@@ -1,18 +1,54 @@
 <div class="login-container">
   <div class="login-card">
     <img src="individual-doing-sport-healthy-lifestyle.jpg" alt="Fitness Image" class="login-image">
-    <h2>Welcome Back!</h2>
+    <h2></h2>
     <p>Log in to continue your fitness journey.</p>
-    <form (ngSubmit)="onSubmit()">
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
       <div class="input-group">
         <label for="email">Email</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email" placeholder="Enter your email" required>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="email"
+          (ngModelChange)="validateEmail()"
+          placeholder="Enter your email"
+          required
+          pattern="^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$"
+          #emailInput="ngModel"
+          [ngClass]="{'invalid': emailInput.invalid && (emailInput.dirty || emailInput.touched), 'valid': emailInput.valid && (emailInput.dirty || emailInput.touched)}"
+          (keydown.enter)="focusNext()"
+        />
+        <span *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="error">
+          <span *ngIf="emailInput.errors?.['required']">Email is required.</span>
+          <span *ngIf="emailInput.errors?.['pattern']">Please enter a valid email address (e.g., user-at-example.com or user-at-college.ac.in).</span>
+        </span>
       </div>
       <div class="input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Enter your password" required>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          (ngModelChange)="validatePassword()"
+          placeholder="Enter your password"
+          required
+          minlength="8"
+          pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
+          #passwordInput="ngModel"
+          [disabled]="!isEmailValid"
+          [ngClass]="{'invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched), 'valid': passwordInput.valid && (passwordInput.dirty || passwordInput.touched)}"
+        />
+        <span *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="error">
+          <span *ngIf="passwordInput.errors?.['required']">Password is required.</span>
+          <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 8 characters long.</span>
+          <span *ngIf="passwordInput.errors?.['pattern']">
+            Password must include at least one uppercase letter and one number.
+          </span>
+        </span>
       </div>
-      <button type="submit" class="btn-primary" (click)="onSubmit()">Login</button>
+      <button type="submit" class="btn-primary" [disabled]="loginForm.invalid">Login</button>
       <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
       <p class="signup-link">Don't have an account? <a routerLink="/signup">Sign up</a></p>
     </form>

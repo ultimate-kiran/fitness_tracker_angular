@@ -40,4 +40,7 @@ export class NutritionhomeComponent implements OnInit {
       this.router.navigate([mealtype.toLowerCase()]);
     }
   }
+  goToDashboard() {
+    this.router.navigate(['/userdashboard']);
+  }
 }

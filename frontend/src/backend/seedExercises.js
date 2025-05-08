@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 const Exercise = require('./models/Exercise');
 
 mongoose.connect('mongodb://127.0.0.1:27017/fitnessTracker')
@@ -11,28 +11,28 @@ const exercises = [
     equipment: "Barbell",
     primaryMuscle: "upperBack",
     secondaryMuscle: "biceps,shoulders",
-    gif: "D:\angular\demo\frontend\src\assets\images\workout1.gif"
+    gif: "/workout1.gif"
   },
   {
     name: "Deadlift (Barbell)",
     equipment: "Barbell",
     primaryMuscle: "hamstrings",
     secondaryMuscle: "lowerBack,glutes",
-    gif: "https://via.placeholder.com/100x200.gif?text=Deadlift"
+    gif: "/w2.gif"
   },
   {
     name: "Back Squat (Barbell)",
     equipment: "Barbell",
     primaryMuscle: "quadriceps",
     secondaryMuscle: "glutes,hamstrings",
-    gif: "https://via.placeholder.com/100x200.gif?text=Back+Squat"
+    gif: "/w3.gif"
   },
   {
     name: "Bench Press (Barbell)",
     equipment: "Barbell",
     primaryMuscle: "chest",
     secondaryMuscle: "triceps,shoulders",
-    gif: "https://via.placeholder.com/100x200.gif?text=Bench+Press+Barbell"
+    gif: "/w4.gif"
   },
   {
     name: "Barbell Curl",
@@ -511,3 +511,4 @@ async function seedExercises() {
 }
 
 seedExercises();
+*/

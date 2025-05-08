@@ -7,7 +7,10 @@ const recipeSchema = new mongoose.Schema({
   Instructions: String,
   Image_Name: String,
   Cleaned_Ingredients: String,
-  calories: Number
-});
+  calories: Number,
+  carbs: Number,
+  protein: Number,
+  fat: Number
+},{ timestamps: true });
 
 module.exports = mongoose.model('Recipe', recipeSchema);

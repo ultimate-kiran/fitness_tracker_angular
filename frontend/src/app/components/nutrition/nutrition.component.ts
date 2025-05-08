@@ -121,6 +121,7 @@ export class NutritionComponent implements OnInit {
     this.totals.protein = this.meals.reduce((sum, m) => sum + m.protein, 0);
     this.totals.carbs = this.meals.reduce((sum, m) => sum + m.carbs, 0);
     this.totals.fat = this.meals.reduce((sum, m) => sum + m.fat, 0);
+    
   }
 
   getPercentage(amount: number, totalMacros: number): number {
@@ -128,12 +129,7 @@ export class NutritionComponent implements OnInit {
   }
 
   handleAddMeal(): void {
-    if (!this.newMeal.mealType || !this.newMeal.mealTime || !this.newMeal.foodItems || !this.newMeal.date) {
-      this.errorMsg = 'Please fill in all required fields.';
-      setTimeout(() => this.errorMsg = '', 3000);
-      return;
-    }
-
+   
     const payload = {
       userId: this.userId,
       mealType: this.newMeal.mealType,
@@ -198,5 +194,8 @@ export class NutritionComponent implements OnInit {
         fat: state.recipeData.fat
       };
     }
+  }
+  navigateTouserdashboard(): void {
+    this.router.navigate(['/userdashboard']);
   }
 }

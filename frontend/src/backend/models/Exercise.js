@@ -5,7 +5,8 @@ const exerciseSchema = new mongoose.Schema({
   equipment: { type: String, required: true },
   primaryMuscle: { type: String, required: true },
   secondaryMuscle: { type: String, required: false },
-  gif: { type: String, required: true },
+  gif: { type: String, required: false },
+  met: { type: Number, required: false }
 });
 
 module.exports = mongoose.model('Exercise', exerciseSchema, 'exercise');

@@ -1,6 +1,6 @@
 <div class="container" *ngIf="recipe">
   <div class="recipe-image">
-    <img [src]="'assets/images/' + (recipe.Image_Name || '') + '.jpg'" alt="{{ recipe.Title }}" *ngIf="recipe.Image_Name">
+    <img [src]="'assets/images/' + (recipe.Image_Name || '') + '.jpg'" alt="IMAGE NOT FOUND" *ngIf="recipe.Image_Name">
   </div>
   <div class="recipe-details">
     <h2>{{ recipe.Title }}</h2>
@@ -37,8 +37,8 @@
       </ng-template>
     </div>
     <div class="flex space-x-4">
-      <button class="add-button" (click)="addToMealTracker()">+ Add to {{ mealTypeDisplay }}</button>
-      <button class="save-button bg-green-500 text-white px-4 py-2 rounded-md" (click)="saveMeal()">Save</button>
+      <button class="add-button" (click)="saveMeal()">+ Add to {{ mealTypeDisplay }}</button>
+      
     </div>
   </div>
 </div>

@@ -50,3 +50,37 @@
   .recipe-card button:hover {
     background-color: #2471a3;
   }
+  /* Back Button */
+.back-button-wrapper {
+  margin-bottom: 24px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-3px);
+  background: #f5f3ff;
+  color: #6D28D9;
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.2);
+}
+
+.back-button svg {
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover svg {
+  transform: translateX(-2px);
+}

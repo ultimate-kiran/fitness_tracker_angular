@@ -1,52 +1,241 @@
+/* Ensure the container takes up the full viewport height for parallax effect */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  h2 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 20px;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* Parallax background */
+.container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/assets/images/backgroud.jpg') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  opacity: 0.3;
+  z-index: -1;
+  filter: blur(5px);
+}
+
+/* Fallback light green background */
+.container {
+  background-color: #e6f7f2;
+}
+
+.container h2 {
+  font-size: 2.5rem;
+  color: #2d3436;
+  text-align: center;
+  margin-bottom: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+.recipe-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease, border 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative; /* For pseudo-elements */
+}
+
+.recipe-card:hover {
+  transform: translateY(-10px) rotate(1deg); /* Enhanced lift with a slight rotation */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #f1f9f7 0%, #e6f7f2 100%);
+  border: 1px solid #28a745; /* Green border glow on hover */
+}
+
+/* Add a glowing effect on hover using a pseudo-element */
+.recipe-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(40, 167, 69, 0); /* Initially transparent */
+  transition: box-shadow 0.4s ease;
+  pointer-events: none;
+}
+
+.recipe-card:hover::after {
+  box-shadow: 0 0 20px rgba(40, 167, 69, 0.5); /* Green glow on hover */
+}
+
+.recipe-card h3 {
+  font-size: 1.3rem;
+  color: #1a3c34;
+  margin-bottom: 15px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  line-height: 1.4;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-image {
+  width: 100%;
+  max-width: 240px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative; /* For overlay */
+}
+
+/* Add a subtle overlay on image hover */
+.recipe-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(40, 167, 69, 0); /* Initially transparent */
+  border-radius: 10px;
+  transition: background 0.4s ease;
+  pointer-events: none;
+}
+
+.recipe-card:hover .recipe-image {
+  transform: scale(1.1) rotate(2deg); /* Enhanced zoom with a slight tilt */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.recipe-card:hover .recipe-image::after {
+  background: rgba(40, 167, 69, 0.15); /* Subtle green tint on hover */
+}
+
+.recipe-card button {
+  background: linear-gradient(90deg, #28a745 0%, #34c759 100%);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative; /* For pseudo-elements */
+  overflow: hidden; /* For ripple effect */
+}
+
+/* Enhanced button hover effects */
+.recipe-card button:hover {
+  background: linear-gradient(90deg, #218838 0%, #2db84c 100%);
+  transform: scale(1.15); /* Larger scale effect */
+  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.5); /* Glowing green shadow */
+}
+
+/* Ripple effect on button hover */
+.recipe-card button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  pointer-events: none;
+}
+
+.recipe-card button:hover::before {
+  width: 300px;
+  height: 300px;
+  opacity: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
   .recipe-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
   }
-  
+
+  .recipe-image {
+    max-width: 200px;
+    height: 140px;
+  }
+}
+
+@media (max-width: 600px) {
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+
   .recipe-card {
-    background-color: #E6F4EA; /* Light green background to match lunch theme */
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    padding: 20px;
   }
-  
-  .recipe-card:hover {
-    transform: translateY(-5px);
+
+  .recipe-image {
+    max-width: 180px;
+    height: 120px;
   }
-  
-  .recipe-card h3 {
-    margin: 0 0 10px;
-    color: #34495e;
-    font-size: 1.2em;
+
+  .container h2 {
+    font-size: 2rem;
   }
-  
-  .recipe-card button {
-    background-color: #27ae60; /* Green button to complement the theme */
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9em;
-    transition: background-color 0.3s;
-  }
-  
-  .recipe-card button:hover {
-    background-color: #219653;
-  }
+}
+/* Back Button */
+.back-button-wrapper {
+  margin-bottom: 24px;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1px solid #d4d4d8;
+  border-radius: 6px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button:hover {
+  transform: translateX(-3px);
+  background: #f5f3ff;
+  color: #6D28D9;
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.2);
+}
+
+.back-button svg {
+  transition: transform 0.3s ease;
+}
+
+.back-button:hover svg {
+  transform: translateX(-2px);
+}

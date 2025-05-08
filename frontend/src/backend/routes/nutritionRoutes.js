@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Add a new nutrition record
 router.post('/', async (req, res) => {
-  const { userId, mealType, time, foodName, calories, carbs, protein, fat,date } = req.body;
+  const { userId, mealType, time, foodName, calories, carbs, protein, fat, date } = req.body;
 
   // Validate required fields
   if (!userId || !mealType || !time || !foodName || calories == null || carbs == null || protein == null || fat == null || !date) {
@@ -58,6 +58,43 @@ router.get('/:userId', async (req, res) => {
   } catch (err) {
     console.error('Nutrition fetch error:', err);
     res.status(500).json({ message: 'Failed to fetch nutrition entries.' });
+  }
+});
+
+// Get nutrition records by foodName
+router.get('/', async (req, res) => {
+  const { foodName } = req.query;
+
+  if (!foodName) {
+    return res.status(400).json({ message: 'foodName query parameter is required.' });
+  }
+
+  try {
+    const nutritionRecords = await Nutrition.find({ foodName });
+    res.json(nutritionRecords);
+  } catch (err) {
+    console.error('Nutrition fetch error:', err);
+    res.status(500).json({ message: 'Failed to fetch nutrition entries.' });
+  }
+});
+
+// Update a nutrition record
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid nutrition ID.' });
+  }
+
+  try {
+    const nutrition = await Nutrition.findByIdAndUpdate(id, req.body, { new: true });
+    if (!nutrition) {
+      return res.status(404).json({ message: 'Nutrition entry not found.' });
+    }
+    res.json(nutrition);
+  } catch (err) {
+    console.error('Nutrition update error:', err);
+    res.status(500).json({ message: 'Failed to update nutrition entry.' });
   }
 });
 

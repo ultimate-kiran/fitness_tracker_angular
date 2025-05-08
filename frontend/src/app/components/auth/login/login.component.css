@@ -1,73 +1,224 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap');
+
 /* Background Styling */
 .login-container {
+    position: relative;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('/assets/images/mountain.jpg');
+    overflow: hidden;
+}
+
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/assets/images/cool-geometric-triangular-figure-neon-laser-light-great-backgrounds-wallpapers.jpg') no-repeat center center/cover;
+    filter: blur(5px);
+    z-index: -2;
+}
+
+.login-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
 }
 
 /* Login Card */
 .login-card {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.85);
     color: white;
-    padding: 30px;
-    border-radius: 10px;
+    padding: 40px;
+    border-radius: 15px;
     text-align: center;
-    width: 350px;
-    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
+    width: 380px;
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1s ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Fade-in animation for the card */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Login Image */
 .login-image {
     width: 100%;
-    max-width: 300px;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    max-width: 320px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Heading and Paragraph */
+.login-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.login-card p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 25px;
 }
 
 /* Input Fields */
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: left;
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 5px;
-    color: #bbb;
+    margin-bottom: 8px;
+    color: #ddd;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
 .input-group input {
     width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background: #333;
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: #2a2a2a;
     color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #ff6600;
+    box-shadow: 0 0 8px rgba(255, 102, 0, 0.3);
+    background: #333;
+}
+
+.input-group input.invalid {
+    border-color: #ff3333;
+    box-shadow: 0 0 8px rgba(255, 51, 51, 0.3);
+}
+
+.input-group input.valid {
+    border-color: #33cc33;
+    box-shadow: 0 0 8px rgba(51, 204, 51, 0.3);
+}
+
+.input-group input:disabled {
+    background-color: #444;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* Button */
 .btn-primary {
-    background: #ff6600;
-    padding: 10px 15px;
+    background: linear-gradient(90deg, #ff6600, #ff4500);
+    padding: 12px;
     width: 100%;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
     font-size: 16px;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
 }
 
 .btn-primary:hover {
-    background: #ff4500;
+    background: linear-gradient(90deg, #ff4500, #ff6600);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 102, 0, 0.5);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 102, 0, 0.2);
+}
+
+.btn-primary:disabled {
+    background: #666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Error Message */
+.error {
+    color: #ff3333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 13px;
+    margin-top: 10px;
+    text-align: center;
+    animation: shake 0.5s ease;
+}
+
+/* Shake animation for error message */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
 }
 
 /* Signup Link */
 .signup-link {
-    margin-top: 15px;
+    margin-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #ccc;
 }
 
 .signup-link a {
     color: #ff6600;
     text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.signup-link a:hover {
+    color: #ff4500;
+    text-decoration: underline;
 }

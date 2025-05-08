@@ -1,93 +1,597 @@
 <div class="container">
-    <!-- Post New Workout Section -->
-    <div class="section">
-      <h2 class="section-title">Post New Workout</h2>
-  
-      <div class="form-group">
-        <label for="workoutTitle">Workout Title</label>
-        <input id="workoutTitle" type="text" class="form-input" value="Full Body Workout" readonly />
-      </div>
-  
-      <div class="form-group">
-        <label for="workoutDescription">Description</label>
-        <textarea id="workoutDescription" class="form-textarea" placeholder="Enter workout description and instructions"></textarea>
-      </div>
-  
-      <div class="form-row">
+  <div class="mb-4">
+    <button class="back-button" (click)="goToDashboard()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Logout
+    </button>
+  </div>
+  <!-- Navigation Tabs -->
+  <div class="tabs">
+    <button [class.active]="activeTab === 'users'" (click)="setActiveTab('users')">Users</button>
+    <button [class.active]="activeTab === 'workouts'" (click)="setActiveTab('workouts')">Workouts</button>
+    <button [class.active]="activeTab === 'nutrition'" (click)="setActiveTab('nutrition')">Nutrition</button>
+  </div>
+
+  <!-- Workouts Section -->
+  <div *ngIf="activeTab === 'workouts'" class="section">
+    <h2 class="section-title">Workouts Management</h2>
+
+    <!-- Buttons Box -->
+    <div class="button-box">
+      <button class="action-btn" (click)="showList = true; showForm = false">List Workouts</button>
+      <button class="action-btn" (click)="showList = false; showForm = true">Add Workouts</button>
+    </div>
+
+    <!-- List Workouts Table -->
+    <div *ngIf="showList" class="workout-list">
+      <table class="management-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Equipment</th>
+            <th>Primary Muscle</th>
+            <th>Secondary Muscle</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let workout of workouts">
+            <td>{{ workout.name }}</td>
+            <td>{{ workout.equipment }}</td>
+            <td>{{ workout.primaryMuscle }}</td>
+            <td>{{ workout.secondaryMuscle }}</td>
+            <td>
+              <button class="edit-btn" (click)="editWorkout(workout)">Edit</button>
+              <button class="delete-btn" (click)="deleteWorkout(workout._id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add Workouts Form -->
+    <div *ngIf="showForm" class="workout-form">
+      <h3 class="form-title">Add New Workout</h3>
+      <form #workoutForm="ngForm" (ngSubmit)="postWorkout()">
         <div class="form-group">
-          <label for="date">Date</label>
-          <input id="date" type="text" class="form-input" value="28-04-2025" readonly />
+          <label for="workoutTitle">Name</label>
+          <input
+            id="workoutTitle"
+            type="text"
+            class="form-input"
+            [(ngModel)]="newWorkout.name"
+            name="name"
+            required
+            pattern="[A-Za-z\s]+"
+            #nameInput="ngModel"
+          />
+          <span *ngIf="nameInput.invalid && (nameInput.dirty || nameInput.touched)" class="error">
+            <span *ngIf="nameInput.errors?.['required']">Name is required.</span>
+            <span *ngIf="nameInput.errors?.['pattern']">Name must contain only letters and spaces.</span>
+          </span>
         </div>
-        <div class="form-group">
-          <label for="duration">Duration (minutes)</label>
-          <input id="duration" type="text" class="form-input" value="30" readonly />
-        </div>
-      </div>
-  
-      <div class="form-row">
+
         <div class="form-group">
           <label for="equipment">Equipment</label>
-          <input id="equipment" type="text" class="form-input" value="Dumbbells, Bench" readonly />
+          <input
+            id="equipment"
+            type="text"
+            class="form-input"
+            [(ngModel)]="newWorkout.equipment"
+            name="equipment"
+            required
+            pattern="[A-Za-z\s]+"
+            #equipmentInput="ngModel"
+          />
+          <span *ngIf="equipmentInput.invalid && (equipmentInput.dirty || equipmentInput.touched)" class="error">
+            <span *ngIf="equipmentInput.errors?.['required']">Equipment is required.</span>
+            <span *ngIf="equipmentInput.errors?.['pattern']">Equipment must contain only letters and spaces.</span>
+          </span>
         </div>
-        <div class="form-group">
-          <label for="calories">Estimated Calories</label>
-          <input id="calories" type="text" class="form-input" value="300" readonly />
-        </div>
-      </div>
-  
-      <div class="form-row">
+
         <div class="form-group">
           <label for="primaryMuscle">Primary Muscle</label>
-          <input id="primaryMuscle" type="text" class="form-input" value="UpperBack" readonly />
+          <input
+            id="primaryMuscle"
+            type="text"
+            class="form-input"
+            [(ngModel)]="newWorkout.primaryMuscle"
+            name="primaryMuscle"
+            required
+            pattern="[A-Za-z\s]+"
+            #primaryMuscleInput="ngModel"
+          />
+          <span *ngIf="primaryMuscleInput.invalid && (primaryMuscleInput.dirty || primaryMuscleInput.touched)" class="error">
+            <span *ngIf="primaryMuscleInput.errors?.['required']">Primary Muscle is required.</span>
+            <span *ngIf="primaryMuscleInput.errors?.['pattern']">Primary Muscle must contain only letters and spaces.</span>
+          </span>
         </div>
+
         <div class="form-group">
-          <label for="secondaryMuscles">Secondary Muscles</label>
-          <input id="secondaryMuscles" type="text" class="form-input" value="Biceps, Shoulders" readonly />
+          <label for="secondaryMuscles">Secondary Muscle</label>
+          <input
+            id="secondaryMuscles"
+            type="text"
+            class="form-input"
+            [(ngModel)]="newWorkout.secondaryMuscle"
+            name="secondaryMuscles"
+            required
+            pattern="[A-Za-z\s]+"
+            #secondaryMuscleInput="ngModel"
+          />
+          <span *ngIf="secondaryMuscleInput.invalid && (secondaryMuscleInput.dirty || secondaryMuscleInput.touched)" class="error">
+            <span *ngIf="secondaryMuscleInput.errors?.['required']">Secondary Muscle is required.</span>
+            <span *ngIf="secondaryMuscleInput.errors?.['pattern']">Secondary Muscle must contain only letters and spaces.</span>
+          </span>
         </div>
-      </div>
-  
-      <button class="submit-btn">Post Workout</button>
+
+        <button type="submit" class="submit-btn" [disabled]="workoutForm.invalid">Add Workout</button>
+        <button type="button" class="cancel-btn" (click)="resetWorkoutForm()">Cancel</button>
+      </form>
     </div>
-  
-    <!-- Post Healthy Food Section -->
-    <div class="section">
-      <h2 class="section-title">Post Healthy Food</h2>
-  
-      <div class="form-group">
-        <label for="foodTitle">Food Title</label>
-        <input id="foodTitle" type="text" class="form-input" value="Miso-Butter Roast Chicken With Acorn Squash Panzanella" readonly />
-      </div>
-  
-      <div class="form-group">
-        <label for="ingredients">Ingredients</label>
-        <textarea id="ingredients" class="form-textarea" readonly>[1 (3½–4-lb.) whole chicken", "2¾ tsp. kosher salt, divided, plus mor...</textarea>
-      </div>
-  
-      <div class="form-group">
-        <label for="instructions">Instructions</label>
-        <textarea id="instructions" class="form-textarea" readonly>Pat chicken dry with paper towels, season all over with 2 tsp. salt, a...</textarea>
-      </div>
-  
-      <div class="form-group">
-        <label for="imageName">Image Name</label>
-        <input id="imageName" type="text" class="form-input" value="miso-butter-roast-chicken-acorn-squash-panzanella" readonly />
-      </div>
-  
-      <div class="form-row">
+
+    <!-- Edit Workout Form -->
+    <div *ngIf="editingWorkout" class="workout-form">
+      <h3 class="form-title">Edit Workout</h3>
+      <form #editWorkoutForm="ngForm" (ngSubmit)="updateWorkout()">
         <div class="form-group">
-          <label for="foodCalories">Calories</label>
-          <input id="foodCalories" type="text" class="form-input" value="68" readonly />
+          <label for="editWorkoutTitle">Name</label>
+          <input
+            id="editWorkoutTitle"
+            type="text"
+            class="form-input"
+            [(ngModel)]="editingWorkout.name"
+            name="name"
+            required
+            pattern="[A-Za-z\s]+"
+            #editNameInput="ngModel"
+          />
+          <span *ngIf="editNameInput.invalid && (editNameInput.dirty || editNameInput.touched)" class="error">
+            <span *ngIf="editNameInput.errors?.['required']">Name is required.</span>
+            <span *ngIf="editNameInput.errors?.['pattern prepaid debit card']">Name must contain only letters and spaces.</span>
+          </span>
         </div>
+
         <div class="form-group">
-          <label for="carbs">Carbohydrates (g)</label>
-          <input id="carbs" type="text" class="form-input" value="85" readonly />
+          <label for="editEquipment">Equipment</label>
+          <input
+            id="editEquipment"
+            type="text"
+            class="form-input"
+            [(ngModel)]="editingWorkout.equipment"
+            name="equipment"
+            required
+            pattern="[A-Za-z\s]+"
+            #editEquipmentInput="ngModel"
+          />
+          <span *ngIf="editEquipmentInput.invalid && (editEquipmentInput.dirty || editEquipmentInput.touched)" class="error">
+            <span *ngIf="editEquipmentInput.errors?.['required']">Equipment is required.</span>
+            <span *ngIf="editEquipmentInput.errors?.['pattern']">Equipment must contain only letters and spaces.</span>
+          </span>
         </div>
+
         <div class="form-group">
-          <label for="proteins">Proteins (g)</label>
-          <input id="proteins" type="text" class="form-input" value="8" readonly />
+          <label for="editPrimaryMuscle">Primary Muscle</label>
+          <input
+            id="editPrimaryMuscle"
+            type="text"
+            class="form-input"
+            [(ngModel)]="editingWorkout.primaryMuscle"
+            name="primaryMuscle"
+            required
+            pattern="[A-Za-z\s]+"
+            #editPrimaryMuscleInput="ngModel"
+          />
+          <span *ngIf="editPrimaryMuscleInput.invalid && (editPrimaryMuscleInput.dirty || editPrimaryMuscleInput.touched)" class="error">
+            <span *ngIf="editPrimaryMuscleInput.errors?.['required']">Primary Muscle is required.</span>
+            <span *ngIf="editPrimaryMuscleInput.errors?.['pattern']">Primary Muscle must contain only letters and spaces.</span>
+          </span>
         </div>
-      </div>
-  
-      <button class="submit-btn">Post Food Item</button>
+
+        <div class="form-group">
+          <label for="editSecondaryMuscles">Secondary Muscle</label>
+          <input
+            id="editSecondaryMuscles"
+            type="text"
+            class="form-input"
+            [(ngModel)]="editingWorkout.secondaryMuscle"
+            name="secondaryMuscles"
+            required
+            pattern="[A-Za-z\s]+"
+            #editSecondaryMuscleInput="ngModel"
+          />
+          <span *ngIf="editSecondaryMuscleInput.invalid && (editSecondaryMuscleInput.dirty || editSecondaryMuscleInput.touched)" class="error">
+            <span *ngIf="editSecondaryMuscleInput.errors?.['required']">Secondary Muscle is required.</span>
+            <span *ngIf="editSecondaryMuscleInput.errors?.['pattern']">Secondary Muscle must contain only letters and spaces.</span>
+          </span>
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="editWorkoutForm.invalid">Update Workout</button>
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+      </form>
     </div>
   </div>
+
+  <!-- Users Section -->
+  <div *ngIf="activeTab === 'users'" class="section">
+    <h2 class="section-title">Users Management</h2>
+    <table class="management-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <button class="delete-btn" (click)="deleteUser(user._id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Nutrition Section -->
+  <div *ngIf="activeTab === 'nutrition'" class="section">
+    <h2 class="section-title">Nutrition Management</h2>
+
+    <div class="meal-type-selection">
+      <label *ngFor="let mealType of mealTypes">
+        <input type="radio" [value]="mealType" [(ngModel)]="selectedMealType" name="mealType" (change)="loadRecipes(mealType)" /> {{ mealType }}
+      </label>
+    </div>
+
+    <div *ngIf="selectedMealType">
+      <div *ngIf="recipes.length > 0 && !editingRecipe" class="recipe-list">
+        <table class="management-table">
+          <thead>
+            <tr>
+              <th>Recipe Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let recipe of recipes">
+              <td>{{ recipe.Title }}</td>
+              <td>
+                <button class="edit-btn" (click)="editRecipe(recipe)">Edit</button>
+                <button class="delete-btn" (click)="deleteRecipe(recipe._id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="recipes.length === 0 && !editingRecipe">
+        <p>No recipes found for {{ selectedMealType }}. Check the console or add recipes with 'mealtype': '{{ selectedMealType.toLowerCase() }}'.</p>
+      </div>
+
+      <!-- Add New Recipe Button -->
+      <div *ngIf="!editingRecipe">
+        <button class="add-btn" (click)="newRecipe[' mealtype'] = selectedMealType">Add New Recipe</button>
+      </div>
+
+      <!-- Add New Recipe Form -->
+      <div *ngIf="newRecipe[' mealtype'] && !editingRecipe" class="recipe-form">
+        <h3 class="form-title">Add New Recipe</h3>
+        <form #recipeForm="ngForm" (ngSubmit)="addNewRecipe()">
+          <div class="form-group">
+            <label for="newMealType">Meal Type</label>
+            <input id="newMealType" type="text" class="form-input" [(ngModel)]="newRecipe[' mealtype']" name="mealtype" required readonly />
+          </div>
+          <div class="form-group">
+            <label for="newTitle">Recipe Name</label>
+            <input
+              id="newTitle"
+              type="text"
+              class="form-input"
+              [(ngModel)]="newRecipe.Title"
+              name="Title"
+              required
+              pattern="[A-Za-z\s]+"
+              #titleInput="ngModel"
+            />
+            <span *ngIf="titleInput.invalid && (titleInput.dirty || titleInput.touched)" class="error">
+              <span *ngIf="titleInput.errors?.['required']">Recipe Name is required.</span>
+              <span *ngIf="titleInput.errors?.['pattern']">Recipe Name must contain only letters and spaces.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="newIngredients">Ingredients</label>
+            <textarea
+              id="newIngredients"
+              class="form-input"
+              [(ngModel)]="newRecipe.Ingredients"
+              name="Ingredients"
+              required
+              pattern="[A-Za-z\s,]+"
+              #ingredientsInput="ngModel"
+            ></textarea>
+            <span *ngIf="ingredientsInput.invalid && (ingredientsInput.dirty || ingredientsInput.touched)" class="error">
+              <span *ngIf="ingredientsInput.errors?.['required']">Ingredients are required.</span>
+              <span *ngIf="ingredientsInput.errors?.['pattern']">Ingredients must contain only letters, spaces, and commas.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="newInstructions">Instructions</label>
+            <textarea
+              id="newInstructions"
+              class="form-input"
+              [(ngModel)]="newRecipe.Instructions"
+              name="Instructions"
+              required
+              pattern="[A-Za-z\s,.]+"
+              #instructionsInput="ngModel"
+            ></textarea>
+            <span *ngIf="instructionsInput.invalid && (instructionsInput.dirty || instructionsInput.touched)" class="error">
+              <span *ngIf="instructionsInput.errors?.['required']">Instructions are required.</span>
+              <span *ngIf="instructionsInput.errors?.['pattern']">Instructions must contain only letters, spaces, commas, and periods.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="newCleanedIngredients">Cleaned Ingredients</label>
+            <textarea
+              id="newCleanedIngredients"
+              class="form-input"
+              [(ngModel)]="newRecipe.Cleaned_Ingredients"
+              name="Cleaned_Ingredients"
+              required
+              pattern="[A-Za-z\s,]+"
+              #cleanedIngredientsInput="ngModel"
+            ></textarea>
+            <span *ngIf="cleanedIngredientsInput.invalid && (cleanedIngredientsInput.dirty || cleanedIngredientsInput.touched)" class="error">
+              <span *ngIf="cleanedIngredientsInput.errors?.['required']">Cleaned Ingredients are required.</span>
+              <span *ngIf="cleanedIngredientsInput.errors?.['pattern']">Cleaned Ingredients must contain only letters, spaces, and commas.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="newCarbs">Carbohydrates (g)</label>
+            <input
+              id="newCarbs"
+              type="number"
+              class="form-input"
+              [(ngModel)]="newRecipe.carbs"
+              (ngModelChange)="calculateCalories()"
+              name="carbs"
+              required
+              min="1"
+              max="150"
+              #carbsInput="ngModel"
+            />
+            <span *ngIf="carbsInput.invalid && (carbsInput.dirty || carbsInput.touched)" class="error">
+              <span *ngIf="carbsInput.errors?.['required']">Carbohydrates are required.</span>
+              <span *ngIf="carbsInput.errors?.['min'] || carbsInput.errors?.['max']">
+                Carbohydrates must be between 1 and 150 g.
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="newFat">Fat (g)</label>
+            <input
+              id="newFat"
+              type="number"
+              class="form-input"
+              [(ngModel)]="newRecipe.fat"
+              (ngModelChange)="calculateCalories()"
+              name="fat"
+              required
+              min="1"
+              max="80"
+              #fatInput="ngModel"
+            />
+            <span *ngIf="fatInput.invalid && (fatInput.dirty || fatInput.touched)" class="error">
+              <span *ngIf="fatInput.errors?.['required']">Fat is required.</span>
+              <span *ngIf="fatInput.errors?.['min'] || fatInput.errors?.['max']">
+                Fat must be between 1 and 80 g.
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="newProtein">Proteins (g)</label>
+            <input
+              id="newProtein"
+              type="number"
+              class="form-input"
+              [(ngModel)]="newRecipe.protein"
+              (ngModelChange)="calculateCalories()"
+              name="protein"
+              required
+              min="1"
+              max="100"
+              #proteinInput="ngModel"
+            />
+            <span *ngIf="proteinInput.invalid && (proteinInput.dirty || proteinInput.touched)" class="error">
+              <span *ngIf="proteinInput.errors?.['required']">Proteins are required.</span>
+              <span *ngIf="proteinInput.errors?.['min'] || proteinInput.errors?.['max']">
+                Proteins must be between 1 and 100 g.
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="newCalories">Calories</label>
+            <input
+              id="newCalories"
+              type="number"
+              class="form-input"
+              [(ngModel)]="newRecipe.calories"
+              name="calories"
+              readonly
+            />
+          </div>
+          <button type="submit" class="submit-btn" [disabled]="recipeForm.invalid">Save Recipe</button>
+          <button type="button" class="cancel-btn" (click)="resetNewRecipe()">Cancel</button>
+        </form>
+      </div>
+
+      <!-- Edit Recipe Form -->
+      <div *ngIf="editingRecipe" class="recipe-form">
+        <h3 class="form-title">Edit Recipe</h3>
+        <form #editRecipeForm="ngForm" (ngSubmit)="updateRecipe()">
+          <div class="form-group">
+            <label for="editRecipeTitle">Recipe Name</label>
+            <input
+              id="editRecipeTitle"
+              type="text"
+              class="form-input"
+              [(ngModel)]="editingRecipe.Title"
+              name="Title"
+              required
+              pattern="[A-Za-z\s]+"
+              #editTitleInput="ngModel"
+            />
+            <span *ngIf="editTitleInput.invalid && (editTitleInput.dirty || editTitleInput.touched)" class="error">
+              <span *ngIf="editTitleInput.errors?.['required']">Recipe Name is required.</span>
+              <span *ngIf="editTitleInput.errors?.['pattern']">Recipe Name must contain only letters and spaces.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="editMealType">Meal Type</label>
+            <input
+              id="editMealType"
+              type="text"
+              class="form-input"
+              [(ngModel)]="editingRecipe[' mealtype']"
+              name="mealtype"
+              required
+              pattern="[A-Za-z\s]+"
+              #editMealTypeInput="ngModel"
+            />
+            <span *ngIf="editMealTypeInput.invalid && (editMealTypeInput.dirty || editMealTypeInput.touched)" class="error">
+              <span *ngIf="editMealTypeInput.errors?.['required']">Meal Type is required.</span>
+              <span *ngIf="editMealTypeInput.errors?.['pattern']">Meal Type must contain only letters and spaces.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="editCarbs">Carbohydrates (g)</label>
+            <input
+              id="editCarbs"
+              type="number"
+              class="form-input"
+              [(ngModel)]="editingRecipe.carbs"
+              (ngModelChange)="calculateEditingCalories()"
+              name="carbs"
+              required
+              min="1"
+              max="150"
+              #editCarbsInput="ngModel"
+            />
+            <span *ngIf="editCarbsInput.invalid && (editCarbsInput.dirty || editCarbsInput.touched)" class="error">
+              <span *ngIf="editCarbsInput.errors?.['required']">Carbohydrates are required.</span>
+              <span *ngIf="editCarbsInput.errors?.['min'] || editCarbsInput.errors?.['max']">
+                Carbohydrates must be between 1 and 150 g.
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="editFat">Fat (g)</label>
+            <input
+              id="editFat"
+              type="number"
+              class="form-input"
+              [(ngModel)]="editingRecipe.fat"
+              (ngModelChange)="calculateEditingCalories()"
+              name="fat"
+              required
+              min="1"
+              max="80"
+              #editFatInput="ngModel"
+            />
+            <span *ngIf="editFatInput.invalid && (editFatInput.dirty || editFatInput.touched)" class="error">
+              <span *ngIf="editFatInput.errors?.['required']">Fat is required.</span>
+              <span *ngIf="editFatInput.errors?.['min'] || editFatInput.errors?.['max']">
+                Fat must be between 1 and 80 g.
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="editProtein">Proteins (g)</label>
+            <input
+              id="editProtein"
+              type="number"
+              class="form-input"
+              [(ngModel)]="editingRecipe.protein"
+              (ngModelChange)="calculateEditingCalories()"
+              name="protein"
+              required
+              min="1"
+              max="100"
+              #editProteinInput="ngModel"
+            />
+            <span *ngIf="editProteinInput.invalid && (editProteinInput.dirty || editProteinInput.touched)" class="error">
+              <span *ngIf="editProteinInput.errors?.['required']">Proteins are required.</span>
+              <span *ngIf="editProteinInput.errors?.['min'] || editProteinInput.errors?.['max']">
+                Proteins must be between 1 and 100 g.
+              </span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="editCalories">Calories</label>
+            <input
+              id="editCalories"
+              type="number"
+              class="form-input"
+              [(ngModel)]="editingRecipe.calories"
+              name="calories"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label for="editInstructions">Instructions</label>
+            <textarea
+              id="editInstructions"
+              class="form-input"
+              [(ngModel)]="editingRecipe.Instructions"
+              name="Instructions"
+              required
+              pattern="[A-Za-z\s,.]+"
+              #editInstructionsInput="ngModel"
+            ></textarea>
+            <span *ngIf="editInstructionsInput.invalid && (editInstructionsInput.dirty || editInstructionsInput.touched)" class="error">
+              <span *ngIf="editInstructionsInput.errors?.['required']">Instructions are required.</span>
+              <span *ngIf="editInstructionsInput.errors?.['pattern']">Instructions must contain only letters, spaces, commas, and periods.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="editIngredients">Ingredients</label>
+            <textarea
+              id="editIngredients"
+              class="form-input"
+              [(ngModel)]="editingRecipe.Ingredients"
+              name="Ingredients"
+              required
+              pattern="[A-Za-z\s,]+"
+              #editIngredientsInput="ngModel"
+            ></textarea>
+            <span *ngIf="editIngredientsInput.invalid && (editIngredientsInput.dirty || editIngredientsInput.touched)" class="error">
+              <span *ngIf="editIngredientsInput.errors?.['required']">Ingredients are required.</span>
+              <span *ngIf="editIngredientsInput.errors?.['pattern']">Ingredients must contain only letters, spaces, and commas.</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="editCleanedIngredients">Cleaned Ingredients</label>
+            <textarea
+              id="editCleanedIngredients"
+              class="form-input"
+              [(ngModel)]="editingRecipe.Cleaned_Ingredients"
+              name="Cleaned_Ingredients"
+              required
+              pattern="[A-Za-z\s,]+"
+              #editCleanedIngredientsInput="ngModel"
+            ></textarea>
+            <span *ngIf="editCleanedIngredientsInput.invalid && (editCleanedIngredientsInput.dirty || editCleanedIngredientsInput.touched)" class="error">
+              <span *ngIf="editCleanedIngredientsInput.errors?.['required']">Cleaned Ingredients are required.</span>
+              <span *ngIf="editCleanedIngredientsInput.errors?.['pattern']">Cleaned Ingredients must contain only letters, spaces, and commas.</span>
+            </span>
+          </div>
+          <button type="submit" class="submit-btn" [disabled]="editRecipeForm.invalid">Post Meal</button>
+          <button type="button" class="cancel-btn" (click)="cancelEditRecipe()">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

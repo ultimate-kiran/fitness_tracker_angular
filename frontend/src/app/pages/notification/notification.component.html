@@ -1,0 +1,45 @@
+<div class="notification-container">
+
+  <div class="mb-4">
+    <button class="back-button" (click)="goToDashboard()">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Dashboard
+    </button>
+  </div>
+
+    <h2 class="notification-title">Notifications</h2>
+    <div class="notification-list" *ngIf="notifications.length > 0; else noNotifications">
+      <div class="notification-item" *ngFor="let notification of notifications">
+        <div class="notification-header">
+          <strong>{{ notification.type }}</strong>
+          <button class="clear-btn" (click)="clearNotifications()">Clear All</button>
+        </div>
+        <div class="notification-details" *ngIf="notification.details">
+          <div *ngIf="notification.type === 'New workout added'">
+            <p><strong>Name:</strong> {{ notification.details.name }}</p>
+            <p><strong>Equipment:</strong> {{ notification.details.equipment }}</p>
+            <p><strong>Primary Muscle:</strong> {{ notification.details.primaryMuscle }}</p>
+            <p><strong>Secondary Muscle:</strong> {{ notification.details.secondaryMuscle }}</p>
+          </div>
+          <div *ngIf="notification.type === 'New recipe added'">
+            <p><strong>Title:</strong> {{ notification.details.Title }}</p>
+            <p><strong>Meal Type:</strong> {{ notification.details[' mealtype'] }}</p>
+            <p><strong>Ingredients:</strong> {{ notification.details.Ingredients }}</p>
+            <p><strong>Instructions:</strong> {{ notification.details.Instructions }}</p>
+            <p><strong>Calories:</strong> {{ notification.details.calories }}</p>
+            <p><strong>Carbs:</strong> {{ notification.details.carbs }}g</p>
+            <p><strong>Fat:</strong> {{ notification.details.fat }}g</p>
+            <p><strong>Protein:</strong> {{ notification.details.protein }}g</p>
+          </div>
+        </div>
+        <div class="notification-details" *ngIf="!notification.details">
+          <p>Loading details...</p>
+        </div>
+      </div>
+    </div>
+    <ng-template #noNotifications>
+      <p class="no-notifications">No new notifications.</p>
+    </ng-template>
+  </div>

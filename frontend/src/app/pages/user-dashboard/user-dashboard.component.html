@@ -1,57 +1,83 @@
 <div class="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-4 md:p-8 flex">
   <!-- Sidebar -->
-  <div class="sidebar w-64 bg-gray-800 text-white p-4 rounded-lg shadow-lg mr-6">
-    <div class="sidebar-header mb-6">
+<div class="sidebar w-64 bg-gray-800 text-white p-4 rounded-lg shadow-lg mr-6">
+  <div class="sidebar-header mb-6">
       <h2 class="text-xl font-bold text-white">Dashboard</h2>
-    </div>
-    <nav class="space-y-2">
-      <a
-        routerLink="/dashboard"
-        class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
-      >
-        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6h13M9 6L5 20M5 20L2 6h7" />
-        </svg>
-        Dashboard
-      </a>
-      <a
-        routerLink="/workout1"
-        class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
-      >
-        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m4-4H8" />
-        </svg>
-        Workout
-      </a>
-      <a
-        routerLink="/exercise"
-        class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
-      >
-        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-        Exercises
-      </a>
-      <a
-        routerLink="/nutritionhome"
-        class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
-      >
-        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l-3-3m0 0l-3 3m3-3v8m-9-5h18" />
-        </svg>
-        Track Nutrition
-      </a>
-      <a
-        routerLink="/profile"
-        class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
-      >
-        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
-        Profile
-      </a>
-    </nav>
   </div>
+  <nav class="space-y-2">
+      <a
+          routerLink="/exercise"
+          class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
+          (click)="viewNotifications()"
+      >
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          Exercises
+      </a>
+      <a
+          routerLink="/nutritionhome"
+          class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
+          (click)="viewNutrition()"
+      >
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l-3-3m0 0l-3 3m3-3v8m-9-5h18" />
+          </svg>
+          Track Nutrition
+      </a>
+      <a
+          routerLink="/profile"
+          class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
+      >
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          Profile
+      </a>
+      <a
+          class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
+          (click)="showPastWorkouts()"
+      >
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          Past Workouts
+      </a>
+      <a
+          routerLink="/notification"
+          class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
+          (click)="viewNotifications()"
+      >
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          Notification
+      </a>
+      <!-- About Us Link -->
+      <a
+          routerLink="/about-us"
+          class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
+          (click)="viewAboutus()"
+      >
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          About Us
+      </a>
+      <!-- Logout Button -->
+      <a
+          class="sidebar-button flex items-center p-3 rounded-lg text-white hover:bg-orange-500 transition-colors"
+          (click)="showLogoutConfirm = true"
+      >
+          <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Logout
+      </a>
+  </nav>
+</div>
+    
+
 
   <!-- Main Content -->
   <div class="flex-1 max-w-7xl space-y-6">
@@ -70,14 +96,9 @@
           <img src="https://github.com/shadcn.png" alt="User" class="h-20 w-20 rounded-full ring-2 ring-purple-300 ring-offset-2">
           <div class="text-center">
             <h2 class="text-xl font-semibold text-gray-800">{{ username }}</h2>
-            <p class="text-sm text-gray-600">Fitness Enthusiast</p>
+            <p class="text-sm text-gray-600">user</p>
           </div>
-          <button class="bg-white text-purple-700 border border-purple-300 px-4 py-2 rounded-lg text-sm hover:bg-purple-100 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="inline-block w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path d="M12 4v16m8-8H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Edit Profile
-          </button>
+          
         </div>
       </div>
     </div>
@@ -95,7 +116,7 @@
               </svg>
             </div>
             <div class="text-2xl font-bold">{{ weight }} kg</div>
-            <p class="text-xs text-gray-500">+2 kg from last month</p>
+            <p class="text-xs text-gray-500"></p>
           </div>
 
           <div class="bg-white/50 backdrop-blur-sm border-2 rounded-lg p-4 shadow-md hover:scale-[1.02] transition">
@@ -121,32 +142,81 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <button
-            (click)="viewWorkouts()"
-            class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition"
-          >
-            View Workouts
-          </button>
-          <button
-            (click)="viewNutrition()"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-md transition"
-          >
-            View Nutrition
-          </button>
-        </div>
+       
 
         <!-- Displayed Data -->
-        <div *ngIf="selectedData" class="bg-white/60 rounded-lg p-6 border-2 shadow">
-          <h3 class="text-lg font-semibold mb-2 text-gray-800">Details</h3>
-          <ul class="list-disc list-inside text-gray-700">
-            <li *ngFor="let item of selectedData">{{ item }}</li>
-          </ul>
+       
+
+        <!-- Weekly Activity Chart -->
+        <div class="bg-white/60 rounded-lg p-6 border-2 shadow">
+          <h3 class="text-lg font-semibold mb-2 text-gray-800">Weekly Activity</h3>
+          <canvas baseChart
+                  [data]="weeklyActivityData"
+                  [options]="weeklyActivityOptions"
+                  type="bar">
+          </canvas>
         </div>
       </div>
 
       <!-- Sidebar Placeholder -->
       <div class="lg:col-span-1 space-y-6"></div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showWorkoutsSection" class="space-y-6 mt-10" id="pastWorkoutsSection">
+  <!-- Table -->
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h3 class="text-xl font-bold mb-4">🏋️ Past Workouts</h3>
+    <table class="w-full text-sm text-left text-gray-700">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+        <tr>
+          <th class="px-4 py-2">🏷️ Type</th>
+          <th class="px-4 py-2">🔥 Calories</th>
+          <th class="px-4 py-2">📅 Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let w of workoutHistory" class="border-b">
+          <td class="px-4 py-2">{{ w.type }}</td>
+          <td class="px-4 py-2">{{ w.calories }}</td>
+          <td class="px-4 py-2">{{ w.date | date: 'MMM d, y' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Chart -->
+  <div *ngIf="isBrowser" class="bg-white p-6 rounded-lg shadow">
+    <h3 class="text-lg font-semibold mb-4 text-gray-800">🔥 Calories Burned Over Time</h3>
+    <canvas baseChart
+            [data]="caloriesChartData"
+            [options]="{ responsive: true }"
+            type="line">
+    </canvas>
+  </div>
+</div>
+<!-- Profile Edit Modal -->
+<div *ngIf="showEditProfile" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Edit Profile</h2>
+    <label class="block mb-2 text-sm font-medium text-gray-700">Username</label>
+    <input type="text" [(ngModel)]="username" class="w-full border rounded p-2 mb-4" />
+    <label class="block mb-2 text-sm font-medium text-gray-700">Weight (kg)</label>
+    <input type="number" [(ngModel)]="weight" class="w-full border rounded p-2 mb-4" />
+    <label class="block mb-2 text-sm font-medium text-gray-700">Height (cm)</label>
+    <input type="number" [(ngModel)]="height" class="w-full border rounded p-2 mb-4" />
+    <div class="flex justify-end space-x-2">
+      <button (click)="cancelEdit()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded">Cancel</button>
+      <button (click)="saveProfile()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Save</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="showLogoutConfirm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Are you sure you want to logout?</h2>
+    <div class="flex justify-end space-x-2">
+      <button (click)="showLogoutConfirm = false" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">No</button>
+      <button (click)="logout()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Yes</button>
     </div>
   </div>
 </div>
